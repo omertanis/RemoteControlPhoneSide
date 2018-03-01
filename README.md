@@ -9,3 +9,6 @@
 * delete node_module and `npm install` again
 * check imports and syntax
 * specially manual installation syntax (./android/app/src/main/java/com/bileklikapp/MainApplication.java) and gradle's
+
+## to do list
+* vibrating example: (https://www.npmjs.com/package/react-native-vibration)
