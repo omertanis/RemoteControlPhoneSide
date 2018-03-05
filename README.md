@@ -12,3 +12,4 @@
 
 ## to do list
 * vibrating example: (https://www.npmjs.com/package/react-native-vibration)
+* maybe one day.. https://www.npmjs.com/package/react-native-draggable
