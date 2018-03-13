@@ -80,7 +80,7 @@ class BluetoothSerialExample extends Component {
     console.log("-*- Start here -*-");
     this.configNotification()
 
-    this.readAlways()
+    // this.readAlways()
 
       Promise.all([
       BluetoothSerial.isEnabled(),
@@ -102,20 +102,27 @@ class BluetoothSerialExample extends Component {
     })
   }
 
+  test(){
+    Toast.showShortBottom("test is working")
+  }
+
   handleAppStateChange(appState){
+    /*
         PushNotification.localNotificationSchedule({
           message: "Warning",
           date: new Date(Date.now()),
         })
+        */
   }
 
   configNotification(){
+    /*
     PushNotification.configure({
       onNotification: function(notification) {
     console.log( 'NOTIFICATION:', notification );
   },
     })
-
+*/
   }
 
 
@@ -235,6 +242,9 @@ class BluetoothSerialExample extends Component {
     .then((res) => {
       Toast.showShortBottom(`Connected to device ${device.name}`)
       this.setState({ device, connected: true, connecting: false })
+      //Switch page here
+      console.log(this.state.device);
+      this.props.navigation.navigate('KeyboardAndMousePage');
     })
     .catch((err) => Toast.showShortBottom(err.message))
   }
@@ -243,6 +253,7 @@ class BluetoothSerialExample extends Component {
    * Disconnect from bluetooth device
    */
   disconnect () {
+
     BluetoothSerial.disconnect()
     .then(() => this.setState({ connected: false }))
     .catch((err) => Toast.showShortBottom(err.message))
@@ -365,22 +376,6 @@ class BluetoothSerialExample extends Component {
             connectedId={this.state.device && this.state.device.id}
             devices={this.state.section === 0 ? this.state.devices : this.state.unpairedDevices}
             onDevicePress={(device) => this.onDevicePress(device)} />
-
-            <TextInput
-              style={{height: 40, width:250, borderColor: 'gray', borderWidth: 1}}
-              onChangeText={(text) => this.setState({text})}
-              value={this.state.text}
-              />
-              <Button
-              style={{height: 40, width:100, borderColor: 'gray', borderWidth: 1}}
-                title="POST"
-                onPress={() => this.write(this.state.text)} />
-
-                <Button
-                style={{height: 40, width:100, borderColor: 'gray', borderWidth: 1}}
-                  title="GET"
-                  onPress={() => this.read()}
-                   />
 
               </View>
 
