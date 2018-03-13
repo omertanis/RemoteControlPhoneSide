@@ -5,7 +5,7 @@ import NotificationPage from './src/components/notifications.js'
 import Keyboard from './src/components/Keyboard.js'
 import Mouse from './src/components/Mouse.js'
 import PanResponderTest from './src/components/PanResponderTest.js'
-
+import TcpTest from './src/components/TcpTest.js'
 
 import React, { Component } from 'react';
 import {

@@ -17,7 +17,7 @@ import {
 
 import Toast from '@remobile/react-native-toast'
 import BluetoothSerial from 'react-native-bluetooth-serial'
-import BackgroundTimer from 'react-native-background-timer';
+// import BackgroundTimer from 'react-native-background-timer';
 import { Buffer } from 'buffer'
 global.Buffer = Buffer
 
@@ -127,18 +127,18 @@ class BluetoothSerialExample extends Component {
 
 
   readAlways(){
-    console.log("readAlways is working");
-    const intervalId = BackgroundTimer.setInterval(() => {
-      BluetoothSerial.readFromDevice().then(
-        (data) => {
-          console.log(data);
-          if(data == "warning"){
-            this.setState({incomingData:data})
-            this.handleAppStateChange();
-          }
-        }
-      );
-    }, 300);
+    // console.log("readAlways is working");
+    // const intervalId = BackgroundTimer.setInterval(() => {
+    //   BluetoothSerial.readFromDevice().then(
+    //     (data) => {
+    //       console.log(data);
+    //       if(data == "warning"){
+    //         this.setState({incomingData:data})
+    //         this.handleAppStateChange();
+    //       }
+    //     }
+    //   );
+    // }, 300);
   }
   /**
    * [android]

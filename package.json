@@ -4,26 +4,49 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "postinstall": "rn-nodeify --install stream,process,util --hack",
     "test": "jest"
   },
   "dependencies": {
     "@remobile/react-native-toast": "^1.0.7",
+    "process": "^0.11.0",
     "react": "16.2.0",
     "react-native": "0.53.3",
     "react-native-background-task": "^0.2.1",
-    "react-native-background-timer": "^2.0.0",
     "react-native-bluetooth-serial": "^1.0.0-rc1",
     "react-native-push-notification": "^3.0.2",
+    "react-native-tcp": "^3.3.0",
     "react-navigation": "^1.5.0",
-    "stream": "0.0.2"
+    "readable-stream": "^1.0.33",
+    "stream": "0.0.2",
+    "stream-browserify": "^1.0.0"
   },
   "devDependencies": {
     "babel-jest": "22.4.1",
     "babel-preset-react-native": "4.0.0",
     "jest": "22.4.2",
-    "react-test-renderer": "16.2.0"
+    "react-test-renderer": "16.2.0",
+    "rn-nodeify": "^10.0.0"
   },
   "jest": {
     "preset": "react-native"
+  },
+  "browser": {
+    "net": "react-native-tcp",
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify"
+  },
+  "react-native": {
+    "net": "react-native-tcp",
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify"
   }
 }

@@ -3,9 +3,9 @@ package com.bileklikapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.peel.react.TcpSocketsModule;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.rusel.RCTBluetoothSerial.RCTBluetoothSerialPackage;
-import com.ocetnik.timer.BackgroundTimerPackage;
 import com.jamesisaac.rnbackgroundtask.BackgroundTaskPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -28,9 +28,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new TcpSocketsModule(),
             new ReactNativePushNotificationPackage(),//this
             new RCTBluetoothSerialPackage(),//this
-            new BackgroundTimerPackage(),//this
             new BackgroundTaskPackage(),//this
             new RCTToastPackage()//this
       );

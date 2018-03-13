@@ -137,13 +137,12 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-tcp')
     compile project(':react-native-push-notification')
     compile project(':react-native-bluetooth-serial')
-    compile project(':react-native-background-timer')
     compile project(':react-native-background-task')
     compile project(':@remobile/react-native-toast')
     compile project(':react-native-bluetooth-serial')
-    compile project(':react-native-background-timer')
     compile project(':react-native-background-task')
     compile project(':@remobile/react-native-toast')
     compile project(':react-native-background-task')
