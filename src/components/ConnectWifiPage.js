@@ -1,71 +1,66 @@
+'use strict';
+
 import React, { Component } from 'react';
-import { Keyboard, TextInput,StyleSheet, View, Button, Text } from 'react-native';
-import Bluetooth from './Bluetooth.js'
-var net = require('net');
-var client;
 
-export default class ConnectWifiPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      info: "this is info"
-    };
-}
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  Navigator,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 
-buttonClick(){
-  client = net.createConnection(8089, "192.168.2.69");
+import QRCodeScanner from 'react-native-qrcode-scanner';
 
-  client.on('error', function(error) {
-  console.log(error)
-});
+class ScanScreen extends Component {
+  onSuccess(e) {
+    console.log(e);
+    // Linking
+    //   .openURL(e.data)
+    //   .catch(err => console.error('An error occured', err));
+  }
 
-client.on('data', function(data) {
-  console.log('message was received', data)
-});
-
-client.write('Hello, server! Love, Client.');
-
-}
-
-button2Click(){
-      client.write('Hello, server! Love, Client.');
-}
-infoChangeOnClick(){
-  this.setState({info:"anan"})
-}
   render() {
     return (
-      <View>
-      <Button
-      title="Connect"
-      onPress={this.buttonClick.bind(this)}
-      color="#841584"/>
-
-      <Button
-      title="Send Data"
-      onPress={this.button2Click.bind(this)}
-      color="#841584"/>
-
-      <Button
-      title="Info change"
-      onPress={this.infoChangeOnClick.bind(this)}
-      color="#841584"/>
-
-      <Text>
-      {this.state.info}
-      </Text>
-      </View>
+      <QRCodeScanner
+        onRead={this.onSuccess.bind(this)}
+        topContent={(
+          <Text style={styles.centerText}>
+            Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on your computer and scan the QR code.
+          </Text>
+        )}
+        bottomContent={(
+          <TouchableOpacity style={styles.buttonTouchable}>
+            <Text style={styles.buttonText}>OK. Got it!</Text>
+          </TouchableOpacity>
+        )}
+      />
     );
   }
 }
 
-var styles = StyleSheet.create({
-  box: {
-    marginTop: 100,
-    flexDirection: 'row',
-    alignSelf: 'center',
-    width: 300,
-    height: 300,
-    backgroundColor: 'red'
-  }
+const styles = StyleSheet.create({
+  centerText: {
+    flex: 1,
+    fontSize: 18,
+    padding: 32,
+    color: '#777',
+  },
+
+  textBold: {
+    fontWeight: '500',
+    color: '#000',
+  },
+
+  buttonText: {
+    fontSize: 21,
+    color: 'rgb(0,122,255)',
+  },
+
+  buttonTouchable: {
+    padding: 16,
+  },
 });
+
+AppRegistry.registerComponent('defaultAndroid', () => ScanScreen);

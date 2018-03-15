@@ -3,6 +3,7 @@ package com.bileklikapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.reactnative.camera.RNCameraPackage;
 import com.peel.react.TcpSocketsModule;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.rusel.RCTBluetoothSerial.RCTBluetoothSerialPackage;
@@ -28,6 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCameraPackage(),
             new TcpSocketsModule(),
             new ReactNativePushNotificationPackage(),//this
             new RCTBluetoothSerialPackage(),//this

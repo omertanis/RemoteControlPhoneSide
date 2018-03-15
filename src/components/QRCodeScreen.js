@@ -9,7 +9,7 @@ var {
   TouchableOpacity,
   VibrationIOS,
 } = React;
-
+import PropTypes from 'prop-types';
 import Camera from 'react-native-camera';
 
 var QRCodeScreen = React.createClass({
