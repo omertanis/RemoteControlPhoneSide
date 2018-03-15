@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
+import Toast from '@remobile/react-native-toast'
 
 import {
   AppRegistry,
@@ -13,9 +14,10 @@ import {
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
-class ScanScreen extends Component {
+export default class ScanScreen extends Component {
   onSuccess(e) {
     console.log(e);
+    Toast.showShortBottom(e.data)
     // Linking
     //   .openURL(e.data)
     //   .catch(err => console.error('An error occured', err));
