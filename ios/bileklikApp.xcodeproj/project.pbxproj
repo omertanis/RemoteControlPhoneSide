@@ -41,6 +41,7 @@
 		8A519868B5384E2396F5AC8C /* libRNBackgroundTimer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94A67ECB7C7A4F0CA3892439 /* libRNBackgroundTimer.a */; };
 		8042685564934AC7AE74FCC5 /* libTcpSockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E3DDD16048489DA9EDF1B2 /* libTcpSockets.a */; };
 		8A307171EE18416C97348C54 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9EA18F3EC447AF82A4733E /* libRNCamera.a */; };
+		49790D9703E740A887A22B38 /* libUdpSockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2925CADD13764A8894B5A2C0 /* libUdpSockets.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -300,6 +301,8 @@
 		97E3DDD16048489DA9EDF1B2 /* libTcpSockets.a */ = {isa = PBXFileReference; name = "libTcpSockets.a"; path = "libTcpSockets.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		B10A6E184ADF43898DEBDB9A /* RNCamera.xcodeproj */ = {isa = PBXFileReference; name = "RNCamera.xcodeproj"; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		5A9EA18F3EC447AF82A4733E /* libRNCamera.a */ = {isa = PBXFileReference; name = "libRNCamera.a"; path = "libRNCamera.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		898C7EC7B1D545AC817E3A73 /* UdpSockets.xcodeproj */ = {isa = PBXFileReference; name = "UdpSockets.xcodeproj"; path = "../node_modules/react-native-udp/ios/UdpSockets.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		2925CADD13764A8894B5A2C0 /* libUdpSockets.a */ = {isa = PBXFileReference; name = "libUdpSockets.a"; path = "libUdpSockets.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -333,6 +336,7 @@
 				8A519868B5384E2396F5AC8C /* libRNBackgroundTimer.a in Frameworks */,
 				8042685564934AC7AE74FCC5 /* libTcpSockets.a in Frameworks */,
 				8A307171EE18416C97348C54 /* libRNCamera.a in Frameworks */,
+				49790D9703E740A887A22B38 /* libUdpSockets.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,6 +519,7 @@
 				DF92951260F444358DA68D03 /* RNBackgroundTimer.xcodeproj */,
 				273BCD5455214C879DFA0C58 /* TcpSockets.xcodeproj */,
 				B10A6E184ADF43898DEBDB9A /* RNCamera.xcodeproj */,
+				898C7EC7B1D545AC817E3A73 /* UdpSockets.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1090,6 +1095,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1098,6 +1104,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-background-timer\ios",
 					"$(SRCROOT)\..\node_modules\react-native-tcp\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-camera\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-udp\ios/**",
 				);
 			};
 			name = Debug;
@@ -1123,6 +1130,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1131,6 +1139,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-background-timer\ios",
 					"$(SRCROOT)\..\node_modules\react-native-tcp\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-camera\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-udp\ios/**",
 				);
 			};
 			name = Release;
@@ -1157,6 +1166,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-background-timer\ios",
 					"$(SRCROOT)\..\node_modules\react-native-tcp\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-camera\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-udp\ios/**",
 				);
 			};
 			name = Debug;
@@ -1182,6 +1192,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-background-timer\ios",
 					"$(SRCROOT)\..\node_modules\react-native-tcp\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-camera\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-udp\ios/**",
 				);
 			};
 			name = Release;
@@ -1216,6 +1227,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1224,6 +1236,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-background-timer\ios",
 					"$(SRCROOT)\..\node_modules\react-native-tcp\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-camera\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-udp\ios/**",
 				);
 			};
 			name = Debug;
@@ -1258,6 +1271,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1266,6 +1280,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-background-timer\ios",
 					"$(SRCROOT)\..\node_modules\react-native-tcp\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-camera\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-udp\ios/**",
 				);
 			};
 			name = Release;
@@ -1295,6 +1310,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
 			name = Debug;
@@ -1319,6 +1335,7 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
