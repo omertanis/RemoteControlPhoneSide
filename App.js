@@ -9,6 +9,7 @@ import PanResponderTest from './src/components/PanResponderTest.js'
 import TcpTest from './src/components/TcpTest.js'
 import ConnectWifiPage from './src/components/ConnectWifiPage.js'
 import Wifi from './src/components/Wifi.js'
+import BluetoothConnect from './src/components/BluetoothConnect.js'
 
 
 import React, { Component } from 'react';
@@ -30,7 +31,7 @@ const RootStack = StackNavigator(
       screen: MainPage,
     },
     ConnectPage: {
-      screen: IndexPage,
+      screen: BluetoothConnect,
     },
     KeyboardAndMousePage: {
       screen: KeyboardAndMousePage,
