@@ -10,8 +10,8 @@ import {
   Dimensions,
 } from "react-native";
 
-import Bluetooth from './Bluetooth.js'
 import WifiOperations from './WifiOperations.js'
+import Bluetooth from './Bluetooth.js'
 
 function float2int (value) {
     return value | 0;
@@ -31,7 +31,7 @@ const getDirectionAndColor = ({ moveX, moveY, dx, dy }) => {
 
   WifiOperations.send("mouse/"+dragDirection)
   if (dragDirection) return dragDirection;
-};
+};1
 
 export default class PanResponderTest extends Component {
 
@@ -60,9 +60,20 @@ export default class PanResponderTest extends Component {
     return (
       <View style={styles.container} {...this._panResponder.panHandlers}>
         <View style={styles.center}>
-        <TouchableOpacity style={{backgroundColor: "red", padding: "100%"}}
+        <TouchableOpacity style={{backgroundColor: "#d7dbe2"}}
         onPress={this.leftClickOnPress.bind(this)}
         onLongPress={this.rightClickOnPress.bind(this)} >
+        <View style={styles.description}>
+        <Text>
+        Mouseun gitmesini istediğiniz yöne doğru çekiniz.
+        </Text>
+        <Text>
+        Tek tıklamak Mouse sol tuş
+        </Text>
+        <Text>
+        Basılı tutmak Mouse sağ tuş
+        </Text>
+        </View>
         </TouchableOpacity>
         </View>
       </View>
@@ -75,15 +86,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   center: {
-    backgroundColor:"red",
+    backgroundColor:"#d7dbe2",
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
   centered: {
-    backgroundColor:"blue",
+    backgroundColor:"#d7dbe2",
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
+  description: {
+    justifyContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });

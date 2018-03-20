@@ -26,18 +26,14 @@ export default class Wifi extends Component {
 
   constructor(props) {
       super(props);
-
-      this.leftClickOnPress = this.leftClickOnPress.bind(this); // This is important
-
+      this.state = {
+        nextInput:"input1",
+      };
     }
 
   componentDidMount(){
     WifiOperations.connect(this.props.navigation.state.params.ip)
   }
-  //
-  // sendData(){
-  //   client.write('Hello, server! Love, Client.');
-  // }
 
   onStartShouldSetResponder () {
     return true;
@@ -63,6 +59,9 @@ export default class Wifi extends Component {
   }
    onKeyPress = ({ nativeEvent: { key } }) => {
      WifiOperations.send(key)
+     this.refs.input1.clear();
+     this.refs.input2.clear();
+
 
 };
 
@@ -77,7 +76,14 @@ rightClickOnPress(){
 }
 
 openKeyboardOnClick(){
+  if(this.state.nextInput == "input1"){
+    this.refs.input1.focus();
+    this.setState({nextInput: "input2"})
+  }else{
+    this.refs.input2.focus();
+    this.setState({nextInput: "input1"})
 
+  }
 }
 
 
@@ -87,30 +93,37 @@ openKeyboardOnClick(){
             <View
             style={{height: 0, width:0, borderColor: 'gray', borderWidth: 1, opacity: 0}}>
             <TextInput
-              autoFocus = {true}
-              onKeyPress={this.onKeyPress}/>
+            ref = "input1"
+            onKeyPress={this.onKeyPress}/>
+
+            <TextInput
+            ref = "input2"
+            autoFocus={true}
+            onKeyPress={this.onKeyPress}/>
+
 
               </View>
-                <View>
-                <Button
-                style={styles.button}
-                title="Left Click"
-                onPress={this.leftClickOnPress.bind(this)}
-                color="#841584"/>
-                </View>
-                <View>
-                <Button
-                style={styles.button}
-                title="Right Click"
-                onPress={this.rightClickOnPress.bind(this)}
-                color="#841584"/>
-                </View>
+
+              <View style={styles.mouseButton}>
+              <Button
+              style={styles.button}
+              title="Left Click"
+              onPress={this.leftClickOnPress.bind(this)}
+              color="#841584"/>
+
+            <Button
+            style={styles.button}
+            title="Right Click"
+            onPress={this.rightClickOnPress.bind(this)}
+            color="#841584"/>
+            </View>
+
 
                 <View style={styles.PanResponder}>
-                <PanResponderWifi />
+                <PanResponderWifi/>
                 </View>
 
-                <View style ={{ marginTop: 100}}>
+                <View style ={{ marginTop: "10%"}}>
                 <Button
                 style={styles.button}
                 title="Open Keyboard"
@@ -126,7 +139,7 @@ openKeyboardOnClick(){
 const styles = StyleSheet.create({
   PanResponder:{
     width: "100%",
-    height: 300
+    height: "80%"
   },
   container: {
     flex: 1,
@@ -149,7 +162,15 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 300,
     backgroundColor: 'white'
-  }
+  },
+  mouseButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop:'-1%'
+    // marginLeft:"25%",
+  },
 });
+
 
 AppRegistry.registerComponent('defaultAndroid', () => ScanScreen);

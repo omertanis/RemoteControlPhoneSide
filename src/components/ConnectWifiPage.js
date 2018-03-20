@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import Toast from '@remobile/react-native-toast';
-import Wifi from './Wifi.js';
+import KeyboardAndMousePageWifi from './KeyboardAndMousePageWifi.js';
 
 var net = require('net');
 var client;
@@ -30,13 +30,13 @@ export default class ScanScreen extends Component {
     var ip = e.data;
 if(net.isIP(ip)){
   this.props.navigation.push({
-    name: Wifi,
+    name: KeyboardAndMousePageWifi,
     passProps: {
       url: 'www.xyz.com',
       data: 'abc'
     }
   })
-  this.props.navigation.navigate('Wifi', {"ip":ip});
+  this.props.navigation.navigate('KeyboardAndMousePageWifi', {"ip":ip});
 }
     // this.props.navigation.navigate('Wifi');
 

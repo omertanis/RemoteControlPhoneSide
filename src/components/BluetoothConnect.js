@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import Toast from '@remobile/react-native-toast';
-import Wifi from './Wifi.js';
 import BluetoothSerial from 'react-native-bluetooth-serial'
 
 var net = require('net');
