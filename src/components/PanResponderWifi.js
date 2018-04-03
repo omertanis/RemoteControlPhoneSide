@@ -31,7 +31,7 @@ const getDirectionAndColor = ({ moveX, moveY, dx, dy }) => {
 
   WifiOperations.send("mouse/"+dragDirection)
   if (dragDirection) return dragDirection;
-};1
+};
 
 export default class PanResponderTest extends Component {
 

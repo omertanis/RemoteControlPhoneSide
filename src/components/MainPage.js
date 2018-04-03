@@ -6,6 +6,7 @@ import {
   View,
   Button,
   Image,
+  BackHandler,
   TouchableOpacity,
 } from 'react-native';
 import RadioButton from 'radio-button-react-native';
@@ -16,23 +17,30 @@ export default class MainPage extends Component<Props> {
       this.state = {
             value: "Bluetooth"
         }
+}
 
+
+handleBackButtonClick() {
+  this.props.navigation.pop();
+}
+
+componentDidMount(){
+  BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick.bind(this));
+}
+
+componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
 }
 
 handleOnPress(value){
     this.setState({value:value})
 }
 
-  connectWithBluetoothOnClick(){
-    this.props.navigation.navigate('ConnectPage');
-  }
-  connectWithWifiOnClick(){
-    this.props.navigation.navigate('ConnectWifiPage');
-  }
 
   searchButtonOnClick(){
     if(this.state.value == "Bluetooth"){
        this.props.navigation.navigate('ConnectPage');
+
     }else if(this.state.value == "Wi-Fi"){
        this.props.navigation.navigate('ConnectWifiPage');
     }

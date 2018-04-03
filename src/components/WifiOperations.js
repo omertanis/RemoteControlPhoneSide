@@ -10,8 +10,9 @@ class WifiOperations {
     });
   }
   static send(data){
+    console.log("yaziyo");
     console.log(data);
-      client.write(data)
+      client.write(data+"/")
   }
 
 }

@@ -16,6 +16,7 @@ import {
   View,
   Platform,
   Button,
+  BackHandler,
   TextInput,
 } from 'react-native';
 import PanResponderWifi from './PanResponderWifi.js'
@@ -31,9 +32,24 @@ export default class Wifi extends Component {
       };
     }
 
+
+
+    handleBackButtonClick() {
+        console.log("Bluetooth Page handleBackButtonClick");
+    }
+
+    componentWillMount(){
+      BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
   componentDidMount(){
     WifiOperations.connect(this.props.navigation.state.params.ip)
-  }
+    }
+
 
   onStartShouldSetResponder () {
     return true;
@@ -45,7 +61,7 @@ export default class Wifi extends Component {
 
   onResponderMove (e) {
     console.log("-----------********------------");
-    client.write("mouse/" +e.nativeEvent.locationX +"/" +e.nativeEvent.locationY)
+    client.write("mouse/" +e.nativeEvent.locationX +"/" +e.nativeEvent.locationY+"/")
   }
 
 

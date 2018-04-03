@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import Toast from '@remobile/react-native-toast';
 import BluetoothSerial from 'react-native-bluetooth-serial'
+import { NavigationActions } from 'react-navigation';
 
 var net = require('net');
 var client;
@@ -23,26 +24,24 @@ export default class BluetoothConnect extends Component {
 
   componentWillMount(){
     Bluetooth.enable();
-    // BluetoothSerial.disconnect();
-    BluetoothSerial.on('connectionLost', () => {
-        Toast.showShortBottom(`Connection lost`)
-        //Main Page'ye gönder
-        this.props.navigation.navigate('MainPage');
-    })
+    // // BluetoothSerial.disconnect();
+    // BluetoothSerial.on('connectionLost', () => {
+    //     Toast.showShortBottom(`Connection lost`)
+    //     //Main Page'ye gönder
+    //     this.props.navigation.navigate('MainPage');
+    // })
   }
+
   onSuccess(e) {
     Toast.showShortBottom(e.data);
     var result = Bluetooth.connect(e.data);
     var that = this;
     setTimeout(function() {
       var resultConnect = Bluetooth.resultConnect();
-      console.log("resultConnect:" +resultConnect);
       if(resultConnect){
-        console.log("SAYFA GEÇİŞİ");
         that.props.navigation.navigate('KeyboardAndMousePage');
       }
       else {
-        console.log("Hata oluştu tekrar deneyiniz");
         Toast.showShortBottom("Hata oluştu tekrar deneyiniz.");
         that.forceUpdate();
       }
@@ -63,7 +62,7 @@ export default class BluetoothConnect extends Component {
         bottomContent={(
           <TouchableOpacity
           style={styles.buttonTouchable}>
-            <Text style={styles.buttonText}>OK. Got it!</Text>
+            <Text style={styles.buttonText}>Bluetooth!</Text>
           </TouchableOpacity>
         )}
       />

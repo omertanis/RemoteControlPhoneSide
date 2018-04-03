@@ -15,7 +15,7 @@ import Bluetooth from './Bluetooth.js'
 import IndexPage from './IndexPage.js';
 import PanResponderBluetooth from './PanResponderBluetooth.js'
 import RadioButton from 'radio-button-react-native';
-
+import { NavigationActions } from 'react-navigation';
 export default class App extends Component<Props> {
 
   constructor (props) {
@@ -25,6 +25,7 @@ export default class App extends Component<Props> {
     };
 
   }
+
 
   onStartShouldSetResponder () {
     return true;

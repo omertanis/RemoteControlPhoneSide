@@ -5,7 +5,6 @@ var isConnected = false;
 
 class Bluetooth {
 
-
   static test(message){
     BluetoothSerial.write(message)
     .then((res) => {
@@ -42,6 +41,12 @@ class Bluetooth {
   static enable () {
     BluetoothSerial.enable()
     .then((res) => Toast.showShortBottom("Bluetooth açıldı"))
+    .catch((err) => Toast.showShortBottom(err.message))
+  }
+
+  static disable () {
+    BluetoothSerial.disable()
+    .then(Toast.showShortBottom("Bluetooth kapatıldı"))
     .catch((err) => Toast.showShortBottom(err.message))
   }
 }
