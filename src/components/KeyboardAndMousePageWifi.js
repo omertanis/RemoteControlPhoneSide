@@ -18,8 +18,12 @@ import {
   Button,
   BackHandler,
   TextInput,
+  Modal,
+  TouchableHighlight
 } from 'react-native';
 import PanResponderWifi from './PanResponderWifi.js'
+import PanResponderWifiSlider from './PanResponderWifiSlider.js'
+
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
@@ -29,56 +33,24 @@ export default class Wifi extends Component {
       super(props);
       this.state = {
         nextInput:"input1",
+        modalVisible: false,
       };
     }
 
+    toggleModal(visible) {
+      this.setState({ modalVisible: visible });
+   }
 
 
-    handleBackButtonClick() {
-        console.log("Bluetooth Page handleBackButtonClick");
-    }
-
-    componentWillMount(){
-      BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
-    }
-
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
-    }
 
   componentDidMount(){
     WifiOperations.connect(this.props.navigation.state.params.ip)
     }
 
-
-  onStartShouldSetResponder () {
-    return true;
-  }
-
-  onMoveShouldSetResponder () {
-    return true;
-  }
-
-  onResponderMove (e) {
-    console.log("-----------********------------");
-    client.write("mouse/" +e.nativeEvent.locationX +"/" +e.nativeEvent.locationY+"/")
-  }
-
-
-  componentWillMount(){
-
-  }
-
-  postOnClick(){
-    console.log("post on postOnClick");
-    WifiOperations.send(this.state.text);
-  }
    onKeyPress = ({ nativeEvent: { key } }) => {
      WifiOperations.send(key)
      this.refs.input1.clear();
      this.refs.input2.clear();
-
-
 };
 
 leftClickOnPress(){
@@ -98,54 +70,99 @@ openKeyboardOnClick(){
   }else{
     this.refs.input2.focus();
     this.setState({nextInput: "input1"})
-
   }
 }
 
 
   render() {
     return (
-      <View>
+      <View style={{backgroundColor:"#b4b9c1", height:"100%"}}>
             <View
-            style={{height: 0, width:0, borderColor: 'gray', borderWidth: 1, opacity: 0}}>
+            style={{height: 0, width:"100%", borderColor: 'gray', borderWidth: 1}}>
             <TextInput
             ref = "input1"
+            secureTextEntry={true}
             onKeyPress={this.onKeyPress}/>
 
             <TextInput
             ref = "input2"
             autoFocus={true}
+            secureTextEntry={true}
             onKeyPress={this.onKeyPress}/>
 
 
               </View>
 
               <View style={styles.mouseButton}>
-              <Button
-              style={styles.button}
-              title="Left Click"
+
+              <TouchableOpacity
               onPress={this.leftClickOnPress.bind(this)}
-              color="#841584"/>
+              style={styles.button}>
+              <Text style={{fontSize: 22, color:"#fff"}}>
+              Left
+              </Text>
+            </TouchableOpacity>
 
-            <Button
-            style={styles.button}
-            title="Right Click"
+            <TouchableOpacity
             onPress={this.rightClickOnPress.bind(this)}
-            color="#841584"/>
-            </View>
+            style={styles.button}>
+            <Text style={{fontSize: 22, color:"#fff"}}>
+            Right
+            </Text>
+          </TouchableOpacity>
+
+              </View>
 
 
-                <View style={styles.PanResponder}>
-                <PanResponderWifi/>
-                </View>
+              <View style={styles.mouseButton}>
 
-                <View style ={{ marginTop: "10%"}}>
-                <Button
-                style={styles.button}
-                title="Open Keyboard"
+              <View style={styles.panresponderMouse}>
+              <PanResponderWifi/>
+              </View>
+
+              <View style= {styles.panresponderScroll}>
+              <PanResponderWifiSlider/>
+              </View>
+              </View>
+
+                <View style ={{ marginTop: "2%"}}>
+
+                <TouchableOpacity
                 onPress={this.openKeyboardOnClick.bind(this)}
-                color="#841584"/>
+                style={styles.openModal}>
+                <Text style={{fontSize: 30, color:"#fff"}}>
+                Klavye
+                </Text>
+              </TouchableOpacity>
                 </View>
+
+                <View>
+
+
+            <Modal animationType = {"slide"} transparent = {false}
+               visible = {this.state.modalVisible}
+               onRequestClose = {() => { console.log("Modal has been closed.") } }>
+               <View style = {styles.modal}>
+                  <Text style = {styles.text}>Modal is open!</Text>
+
+                  <TouchableHighlight onPress = {() => {
+                     this.toggleModal(!this.state.modalVisible)}}>
+
+                     <Text style = {styles.text}>Close Modal</Text>
+                  </TouchableHighlight>
+               </View>
+            </Modal>
+
+            <TouchableOpacity
+            onPress = {() => {this.toggleModal(true)}}
+            style={styles.openModal}>
+            <Text style={{fontSize: 30, color:"#fff"}}>
+            Ayarlar
+            </Text>
+          </TouchableOpacity>
+
+
+         </View>
 
       </View>
     );
@@ -163,9 +180,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   button: {
-    backgroundColor: 'red',
-    width: '30%',
-    height: 10,
+    backgroundColor: '#299FD2',
+    borderRadius: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width:"30%",
   },
   mouse: {
     height: 250,
@@ -183,9 +202,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop:'-1%'
+    // marginTop:'-1%'
     // marginLeft:"25%",
   },
+  panresponderMouse: {
+    width: "90%",
+  },
+  panresponderScroll: {
+    width: "10%",
+    height: 400
+  },
+  openKeyboardButton: {
+    backgroundColor: 'red',
+    width: "50px",
+    height: 10
+  },
+  openModal: {
+    backgroundColor: '#299FD2',
+    borderRadius: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width:"50%",
+    marginLeft:"25%",
+    marginTop: "2%"
+  }
 });
 
 

@@ -11,7 +11,7 @@ import {
 } from "react-native";
 
 import Bluetooth from './Bluetooth.js'
-
+import KeyboardAndMousePage from './KeyboardAndMousePage';
 function float2int (value) {
     return value | 0;
 }
@@ -30,7 +30,7 @@ const getDirectionAndColor = ({ moveX, moveY, dx, dy }) => {
 
   Bluetooth.test("mouse/"+dragDirection)
   if (dragDirection) return dragDirection;
-};1
+};
 
 export default class PanResponderTest extends Component {
 
@@ -44,10 +44,11 @@ export default class PanResponderTest extends Component {
     });
   }
 
-  buttonClicked(){
-    console.log("left")
-  }
+
   leftClickOnPress(){
+    console.log("leftClickOnPress");
+    console.log(KeyboardAndMousePage.getValue());
+
     Bluetooth.test("mouse/left");
   }
 
@@ -72,6 +73,9 @@ export default class PanResponderTest extends Component {
         <Text>
         Basılı tutmak Mouse sağ tuş
         </Text>
+        <Text>
+        Scroll icin yan tarafi kullaniniz
+        </Text>
         </View>
         </TouchableOpacity>
         </View>
@@ -85,18 +89,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   center: {
-    backgroundColor:"#d7dbe2",
+    backgroundColor:"#b3c6e5",
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
   centered: {
-    backgroundColor:"#d7dbe2",
+    backgroundColor:"#b3c6e5",
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
   description: {
+    backgroundColor:"#b3c6e5",
     justifyContent: 'center',
     justifyContent: 'center',
     alignItems: 'center',

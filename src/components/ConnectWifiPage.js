@@ -51,14 +51,14 @@ if(net.isIP(ip)){
         onRead={this.onSuccess.bind(this)}
         topContent={(
           <Text style={styles.centerText}>
-            Lütfen ciahzınızda oluşturulan <Text style={styles.buttonText}>QR</Text> kodunu okutunuz.
+            Lütfen cihazınızda oluşturulan <Text style={styles.buttonText}>QR</Text> kodunu okutunuz.
           </Text>
         )}
         bottomContent={(
           <TouchableOpacity
           onPress={this.sendData.bind(this)}
           style={styles.buttonTouchable}>
-            <Text style={styles.buttonText}>OK. Got it!</Text>
+            <Text style={styles.buttonText}>Wi-Fi!</Text>
           </TouchableOpacity>
         )}
       />

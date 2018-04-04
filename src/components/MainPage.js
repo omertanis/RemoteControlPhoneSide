@@ -8,14 +8,16 @@ import {
   Image,
   BackHandler,
   TouchableOpacity,
+  Modal,
 } from 'react-native';
 import RadioButton from 'radio-button-react-native';
-
+import Slider from "react-native-slider";
+import BluetoothConnect from './BluetoothConnect';
 export default class MainPage extends Component<Props> {
   constructor (props){
     super(props)
       this.state = {
-            value: "Bluetooth"
+            value: "Bluetooth",
         }
 }
 
@@ -38,12 +40,14 @@ handleOnPress(value){
 
 
   searchButtonOnClick(){
+
     if(this.state.value == "Bluetooth"){
        this.props.navigation.navigate('ConnectPage');
 
     }else if(this.state.value == "Wi-Fi"){
        this.props.navigation.navigate('ConnectWifiPage');
     }
+
   }
 
   render() {
@@ -135,5 +139,9 @@ const styles = StyleSheet.create({
     width:"90%",
     marginLeft:"5%",
 
+  },
+  slider: {
+    transform: [{ rotate: '90deg'}],
+    backgroundColor: '#FFF'
   }
 })

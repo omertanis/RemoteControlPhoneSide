@@ -9,3 +9,17 @@ this.props
                   NavigationActions.navigate({ routeName: 'ConnectPage'})
                 ]
               }));
+
+
+                  <View style={styles.slider}>
+                      <Slider
+                        value={this.state.valueSlider}
+                        minimumValue=5
+                        maximumValue=20
+                        onValueChange={value => this.setState({valueSlider:value})}
+                        onSlidingComplete={this.degistirOnClick.bind(this)}
+                      />
+                      <Text>
+                        Value: {this.state.valueSlider}
+                      </Text>
+                    </View>

@@ -10,7 +10,6 @@ import {
   Dimensions,
 } from "react-native";
 
-import WifiOperations from './WifiOperations.js'
 import Bluetooth from './Bluetooth.js'
 
 function float2int (value) {
@@ -26,10 +25,11 @@ const getDirectionAndColor = ({ moveX, moveY, dx, dy }) => {
   const draggedRight = dx > 10;
   let dragDirection = "";
 
-    dragDirection += float2int(dx)+"/";
     dragDirection += float2int(dy);
+    if(dragDirection != ""){
+      Bluetooth.test("mouse/scroll/"+dragDirection)
+    }
 
-  WifiOperations.send("mouse/"+dragDirection)
   if (dragDirection) return dragDirection;
 };
 
@@ -49,11 +49,11 @@ export default class PanResponderTest extends Component {
     console.log("left")
   }
   leftClickOnPress(){
-    WifiOperations.send("mouse/left");
+    Bluetooth.test("mouse/left");
   }
 
   rightClickOnPress(){
-    WifiOperations.send("mouse/right");
+    Bluetooth.test("mouse/right");
   }
 
   render() {
@@ -63,17 +63,7 @@ export default class PanResponderTest extends Component {
         <TouchableOpacity style={{backgroundColor: "#d7dbe2"}}
         onPress={this.leftClickOnPress.bind(this)}
         onLongPress={this.rightClickOnPress.bind(this)} >
-        <View style={styles.description}>
-        <Text>
-        Mouseun gitmesini istediğiniz yöne doğru çekiniz.
-        </Text>
-        <Text>
-        Tek tıklamak Mouse sol tuş
-        </Text>
-        <Text>
-        Basılı tutmak Mouse sağ tuş
-        </Text>
-        </View>
+
         </TouchableOpacity>
         </View>
       </View>
@@ -86,19 +76,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   center: {
-    backgroundColor:"#b3c6e5",
+    backgroundColor:"#bacff2",
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
   centered: {
-    backgroundColor:"#b3c6e5",
+    backgroundColor:"#bacff2",
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
   description: {
-    backgroundColor:"#b3c6e5",
     justifyContent: 'center',
     justifyContent: 'center',
     alignItems: 'center',
