@@ -5,14 +5,8 @@ const dgram = require('dgram')
 const socket = dgram.createSocket('udp4');
 const Buffer = global.Buffer = require('buffer').Buffer;
 var pcip;
-function toByteArray(obj) {
-  var uint = new Uint8Array(obj.length);
-  for (var i = 0, l = obj.length; i < l; i++) {
-    uint[i] = obj.charCodeAt(i);
-  }
 
-  return new Uint8Array(uint);
-}
+
 
 class WifiOperations {
   static connect(ip) {
@@ -23,7 +17,6 @@ class WifiOperations {
     //   console.log("error")
     // });
 
-
     socket.bind(8089, ip, function() {
       console.log('connection');
     });
@@ -31,9 +24,6 @@ class WifiOperations {
     socket.on('error', (err) => {
       console.log("error udp");
     });
-
-
-
 
   }
   // static send(data) {
@@ -48,7 +38,6 @@ class WifiOperations {
       err && console.error(err.stack || err);
    });
 
-    console.log(data);
   }
 
 }

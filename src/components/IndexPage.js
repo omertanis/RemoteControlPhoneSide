@@ -253,7 +253,7 @@
 //    * Disconnect from bluetooth device
 //    */
 //   disconnect () {
-//
+// 
 //     BluetoothSerial.disconnect()
 //     .then(() => this.setState({ connected: false }))
 //     .catch((err) => Toast.showShortBottom(err.message))

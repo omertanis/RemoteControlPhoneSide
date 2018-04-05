@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-
+import KeyboardAndMousePage from './KeyboardAndMousePage';
 import Bluetooth from './Bluetooth.js'
 
 function float2int (value) {
@@ -25,7 +25,7 @@ const getDirectionAndColor = ({ moveX, moveY, dx, dy }) => {
   const draggedRight = dx > 10;
   let dragDirection = "";
 
-    dragDirection += float2int(dy);
+    dragDirection += float2int(dy)*KeyboardAndMousePage.getTersineKaydirma();
     if(dragDirection != ""){
       Bluetooth.test("mouse/scroll/"+dragDirection)
     }

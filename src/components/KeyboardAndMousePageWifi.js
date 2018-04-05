@@ -19,33 +19,61 @@ import {
   BackHandler,
   TextInput,
   Modal,
-  TouchableHighlight
+  TouchableHighlight,
+  Switch,
+  Slider,
 } from 'react-native';
+import SettingsList from 'react-native-settings-list';
+
 import PanResponderWifi from './PanResponderWifi.js'
 import PanResponderWifiSlider from './PanResponderWifiSlider.js'
-
-
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
-export default class Wifi extends Component {
+let solEl = false;
+let hassaslik = 6.0;
+let tersineKaydirma = false;
+export default class KeyboardAndMousePage extends Component {
 
   constructor(props) {
       super(props);
       this.state = {
         nextInput:"input1",
         modalVisible: false,
+        solEl: false,
+        hassaslik:6.0,
+        tersineKaydirma:false
+
       };
     }
 
+    static getHassaslik(){
+      return hassaslik;
+    }
+
+    static getTersineKaydirma(){
+      if (tersineKaydirma){
+        return -1;
+      }
+      else{
+        return 1;
+      }
+    }
+
+    componentDidMount(){
+      WifiOperations.connect(this.props.navigation.state.params.ip)
+    }
+
+
     toggleModal(visible) {
       this.setState({ modalVisible: visible });
+
+      if(!visible){
+        // solEl = this.state.solEl;
+        hassaslik = this.state.hassaslik;
+        tersineKaydirma = this.state.tersineKaydirma;
+      }
+
    }
-
-
-
-  componentDidMount(){
-    WifiOperations.connect(this.props.navigation.state.params.ip)
-    }
 
    onKeyPress = ({ nativeEvent: { key } }) => {
      WifiOperations.send(key)
@@ -54,13 +82,29 @@ export default class Wifi extends Component {
 };
 
 leftClickOnPress(){
-  WifiOperations.send("mouse/left")
-  // client.write("mouse/left");
+  if(this.state.solEl){
+    WifiOperations.send("mouse/right")
+  }
+  else{
+    WifiOperations.send("mouse/left")
+  }
 }
 
 rightClickOnPress(){
-  WifiOperations.send("mouse/right")
-  // client.write("mouse/right");
+  if(this.state.solEl){
+    WifiOperations.send("mouse/left");
+}
+else {
+  WifiOperations.send("mouse/right");
+}
+}
+
+solElChange(value){
+  this.setState({solEl:value})
+}
+
+tersineKaydirmaChange(value){
+    this.setState({tersineKaydirma:value})
 }
 
 openKeyboardOnClick(){
@@ -72,49 +116,51 @@ openKeyboardOnClick(){
     this.setState({nextInput: "input1"})
   }
 }
-
+openModal(){
+  this.toggleModal(true);
+}
 
   render() {
     return (
       <View style={{backgroundColor:"#b4b9c1", height:"100%"}}>
-            <View
-            style={{height: 0, width:"100%", borderColor: 'gray', borderWidth: 1}}>
-            <TextInput
-            ref = "input1"
-            secureTextEntry={true}
-            onKeyPress={this.onKeyPress}/>
 
-            <TextInput
-            ref = "input2"
-            autoFocus={true}
-            secureTextEntry={true}
-            onKeyPress={this.onKeyPress}/>
+            <View style={{height: 0, width:"100%", borderColor: 'gray', borderWidth: 1}}>
+              <TextInput
+              ref = "input1"
+              secureTextEntry={true}
+              onKeyPress={this.onKeyPress}/>
 
+              <TextInput
+              ref = "input2"
+              autoFocus={true}
+              secureTextEntry={true}
+              onKeyPress={this.onKeyPress}/>
+            </View>
 
-              </View>
-
-              <View style={styles.mouseButton}>
+            <View style={styles.mouseButton}>
 
               <TouchableOpacity
+              ref = "left"
               onPress={this.leftClickOnPress.bind(this)}
               style={styles.button}>
-              <Text style={{fontSize: 22, color:"#fff"}}>
-              Left
-              </Text>
-            </TouchableOpacity>
+                <Text style={{fontSize: 22, color:"#fff"}}>
+                Left
+                </Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-            onPress={this.rightClickOnPress.bind(this)}
-            style={styles.button}>
-            <Text style={{fontSize: 22, color:"#fff"}}>
-            Right
-            </Text>
-          </TouchableOpacity>
+              <TouchableOpacity
+              ref = "right"
+              onPress={this.rightClickOnPress.bind(this)}
+              style={styles.button}>
+                <Text style={{fontSize: 22, color:"#fff"}}>
+                Right
+                </Text>
+              </TouchableOpacity>
 
-              </View>
+            </View>
 
 
-              <View style={styles.mouseButton}>
+            <View style={styles.mouseButton}>
 
               <View style={styles.panresponderMouse}>
               <PanResponderWifi/>
@@ -123,38 +169,87 @@ openKeyboardOnClick(){
               <View style= {styles.panresponderScroll}>
               <PanResponderWifiSlider/>
               </View>
-              </View>
 
-                <View style ={{ marginTop: "2%"}}>
+            </View>
 
-                <TouchableOpacity
+            <View style ={{ marginTop: "2%"}}>
+              <TouchableOpacity
                 onPress={this.openKeyboardOnClick.bind(this)}
                 style={styles.openModal}>
-                <Text style={{fontSize: 30, color:"#fff"}}>
-                Klavye
-                </Text>
+                  <Text style={{fontSize: 30, color:"#fff"}}>
+                  Klavye
+                  </Text>
               </TouchableOpacity>
-                </View>
+            </View>
 
-                <View>
-
+            <View>
 
             <Modal animationType = {"slide"} transparent = {false}
                visible = {this.state.modalVisible}
                onRequestClose = {() => { console.log("Modal has been closed.") } }>
-               <View style = {styles.modal}>
-                  <Text style = {styles.text}>Modal is open!</Text>
+              <View style = {styles.modal}>
+                 <TouchableOpacity
+                 disabled={true}
+                 style={styles.header}>
+                   <Text style={{fontSize: 30, color:"#fff"}}>
+                   AYARLAR
+                   </Text>
+                 </TouchableOpacity>
 
-                  <TouchableHighlight onPress = {() => {
-                     this.toggleModal(!this.state.modalVisible)}}>
+                          <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
+                                    <SettingsList.Item
+                                        icon={<Text></Text>}
+                                        hasSwitch={true}
+                                        hasNavArrow={false}
+                                        title='Sol el'
+                                        titleStyle={{fontSize: 16}}
+                                        switchOnValueChange={this.solElChange.bind(this)}
+                                        switchState={this.state.solEl}
+                                      />
+                                      <SettingsList.Header headerStyle={{marginTop: -13}}/>
 
-                     <Text style = {styles.text}>Close Modal</Text>
-                  </TouchableHighlight>
+                                      <SettingsList.Item
+                                        icon={
+                                          <View style={styles.imageStyle}>
+                                          <Text style={{marginLeft:"5%", fontSize:16}}>
+                                           Hassaslık
+                                          </Text>
+                                          <Slider
+                                            value={this.state.hassaslik}
+                                            step={1}
+                                            minimumValue={1}
+                                            maximumValue={20}
+                                            onValueChange={hassaslik => this.setState({hassaslik:hassaslik})}/>
+                                          </View>
+                                        }
+                                        hasNavArrow={false}
+                                    />
+                                    <SettingsList.Header headerStyle={{marginTop: -13}}/>
+
+                                    <SettingsList.Item
+                                        switchOnValueChange={this.tersineKaydirmaChange.bind(this)}
+                                        switchState={this.state.tersineKaydirma}
+                                        hasSwitch={true}
+                                        hasNavArrow={false}
+                                        title='Tersine Kaydırma'
+                                        titleStyle={{fontSize: 16}}
+                                      />
+
+                          </SettingsList>
+                          <TouchableOpacity
+                          onPress = {() => {
+                             this.toggleModal(!this.state.modalVisible)}}
+                          style={styles.openModal}>
+                          <Text style={{fontSize: 30, color:"#fff"}}>
+                          KAYDET
+                          </Text>
+                        </TouchableOpacity>
+
                </View>
             </Modal>
 
             <TouchableOpacity
-            onPress = {() => {this.toggleModal(true)}}
+            onPress = {this.openModal.bind(this)}
             style={styles.openModal}>
             <Text style={{fontSize: 30, color:"#fff"}}>
             Ayarlar
@@ -225,8 +320,18 @@ const styles = StyleSheet.create({
     width:"50%",
     marginLeft:"25%",
     marginTop: "2%"
-  }
+  },
+  header: {
+    backgroundColor: '#299FD2',
+    borderRadius: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageStyle:{
+    alignSelf:'center',
+    width:'100%',
+    height:1,
+    marginLeft:15,
+    justifyContent:'center'
+}
 });
-
-
-AppRegistry.registerComponent('defaultAndroid', () => ScanScreen);

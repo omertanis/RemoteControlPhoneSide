@@ -24,9 +24,8 @@ const getDirectionAndColor = ({ moveX, moveY, dx, dy }) => {
   const draggedLeft = dx < -10;
   const draggedRight = dx > 10;
   let dragDirection = "";
-
-    dragDirection += float2int(dx)+"/";
-    dragDirection += float2int(dy);
+    dragDirection += float2int(dx)*KeyboardAndMousePage.getHassaslik()+"/";
+    dragDirection += float2int(dy)*KeyboardAndMousePage.getHassaslik();
 
   Bluetooth.test("mouse/"+dragDirection)
   if (dragDirection) return dragDirection;
@@ -46,9 +45,7 @@ export default class PanResponderTest extends Component {
 
 
   leftClickOnPress(){
-    console.log("leftClickOnPress");
-    console.log(KeyboardAndMousePage.getValue());
-
+    console.log(KeyboardAndMousePage.getHassaslik());
     Bluetooth.test("mouse/left");
   }
 

@@ -11,7 +11,7 @@ import {
 } from "react-native";
 
 import WifiOperations from './WifiOperations.js'
-
+import KeyboardAndMousePageWifi from './KeyboardAndMousePageWifi';
 function float2int (value) {
     return value | 0;
 }
@@ -25,7 +25,7 @@ const getDirectionAndColor = ({ moveX, moveY, dx, dy }) => {
   const draggedRight = dx > 10;
   let dragDirection = "";
 
-    dragDirection += float2int(dy);
+    dragDirection += float2int(dy)*KeyboardAndMousePageWifi.getTersineKaydirma();
     if(dragDirection != ""){
       WifiOperations.send("mouse/scroll/"+dragDirection)
     }

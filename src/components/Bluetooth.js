@@ -13,6 +13,7 @@ class Bluetooth {
   }
 
   static connect(id){
+    console.log("kaksbf");
     try{
       BluetoothSerial.connect(id)
       .then((res) => {
@@ -45,9 +46,7 @@ class Bluetooth {
   }
 
   static disable () {
-    BluetoothSerial.disable()
-    .then(Toast.showShortBottom("Bluetooth kapatıldı"))
-    .catch((err) => Toast.showShortBottom(err.message))
+    BluetoothSerial.disconnect()
   }
 }
 module.exports = Bluetooth;

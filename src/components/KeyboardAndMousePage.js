@@ -13,44 +13,71 @@ import {
   Modal,
   Switch,
   Slider,
-  FlatList,
-  List,
 } from 'react-native';
-
+import BluetoothSerial from 'react-native-bluetooth-serial'
 import Bluetooth from './Bluetooth.js'
 import IndexPage from './IndexPage.js';
 import PanResponderBluetooth from './PanResponderBluetooth.js'
 import PanResponderBluetoothSlider from './PanResponderBluetoothSlider.js'
 import RadioButton from 'radio-button-react-native';
 import { NavigationActions } from 'react-navigation';
+import Toast from '@remobile/react-native-toast'
+import SettingsList from 'react-native-settings-list';
 
-var data = "";
-var leftRightHand="";
-var sensitive=0.0;
-export default class Wifi extends Component {
+
+let solEl = false;
+let hassaslik = 6.0;
+let tersineKaydirma = false;
+export default class KeyboardAndMousePage extends Component {
 
   constructor(props) {
       super(props);
       this.state = {
         nextInput:"input1",
         modalVisible: false,
-        data:"",
-        leftRightHand: false,
-        valueSlider:6.0,
+        solEl: false,
+        hassaslik:6.0,
+        tersineKaydirma:false
       };
     }
 
-    static getValue(){
-      return sensitive
+    static getHassaslik(){
+      return hassaslik;
     }
 
+    static getTersineKaydirma(){
+      if (tersineKaydirma){
+        return -1;
+      }
+      else{
+        return 1;
+      }
+    }
+
+componentWillMount(){
+  
+  BluetoothSerial.on('connectionLost', () => {
+
+    this.props
+               .navigation
+               .dispatch(NavigationActions.reset(
+                 {
+                    index: 0,
+                    actions: [
+                      NavigationActions.navigate({ routeName: 'MainPage'})
+                    ]
+                  }));
+  })
+
+
+}
     toggleModal(visible) {
       this.setState({ modalVisible: visible });
 
       if(!visible){
-        data = this.state.data;
-        leftRightHand = this.state.leftRightHand;
-        sensitive = this.state.valueSlider;
+        // solEl = this.state.solEl;
+        hassaslik = this.state.hassaslik;
+        tersineKaydirma = this.state.tersineKaydirma;
       }
 
    }
@@ -62,11 +89,29 @@ export default class Wifi extends Component {
 };
 
 leftClickOnPress(){
-  Bluetooth.test("mouse/left")
+  if(this.state.solEl){
+    Bluetooth.test("mouse/right")
+  }
+  else{
+    Bluetooth.test("mouse/left")
+  }
 }
 
 rightClickOnPress(){
-  Bluetooth.test("mouse/right")
+  if(this.state.solEl){
+    Bluetooth.test("mouse/left");
+}
+else {
+  Bluetooth.test("mouse/right");
+}
+}
+
+solElChange(value){
+  this.setState({solEl:value})
+}
+
+tersineKaydirmaChange(value){
+    this.setState({tersineKaydirma:value})
 }
 
 openKeyboardOnClick(){
@@ -85,44 +130,44 @@ openModal(){
   render() {
     return (
       <View style={{backgroundColor:"#b4b9c1", height:"100%"}}>
-            <View
-            style={{height: 0, width:"100%", borderColor: 'gray', borderWidth: 1}}>
-            <TextInput
-            ref = "input1"
-            secureTextEntry={true}
-            onKeyPress={this.onKeyPress}/>
 
-            <TextInput
-            ref = "input2"
-            autoFocus={true}
-            secureTextEntry={true}
-            onKeyPress={this.onKeyPress}/>
+            <View style={{height: 0, width:"100%", borderColor: 'gray', borderWidth: 1}}>
+              <TextInput
+              ref = "input1"
+              secureTextEntry={true}
+              onKeyPress={this.onKeyPress}/>
 
+              <TextInput
+              ref = "input2"
+              autoFocus={true}
+              secureTextEntry={true}
+              onKeyPress={this.onKeyPress}/>
+            </View>
 
-              </View>
-
-              <View style={styles.mouseButton}>
+            <View style={styles.mouseButton}>
 
               <TouchableOpacity
+              ref = "left"
               onPress={this.leftClickOnPress.bind(this)}
               style={styles.button}>
-              <Text style={{fontSize: 22, color:"#fff"}}>
-              Left
-              </Text>
-            </TouchableOpacity>
+                <Text style={{fontSize: 22, color:"#fff"}}>
+                Left
+                </Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-            onPress={this.rightClickOnPress.bind(this)}
-            style={styles.button}>
-            <Text style={{fontSize: 22, color:"#fff"}}>
-            Right
-            </Text>
-          </TouchableOpacity>
+              <TouchableOpacity
+              ref = "right"
+              onPress={this.rightClickOnPress.bind(this)}
+              style={styles.button}>
+                <Text style={{fontSize: 22, color:"#fff"}}>
+                Right
+                </Text>
+              </TouchableOpacity>
 
-              </View>
+            </View>
 
 
-              <View style={styles.mouseButton}>
+            <View style={styles.mouseButton}>
 
               <View style={styles.panresponderMouse}>
               <PanResponderBluetooth/>
@@ -131,77 +176,81 @@ openModal(){
               <View style= {styles.panresponderScroll}>
               <PanResponderBluetoothSlider/>
               </View>
-              </View>
 
-                <View style ={{ marginTop: "2%"}}>
+            </View>
 
-                <TouchableOpacity
+            <View style ={{ marginTop: "2%"}}>
+              <TouchableOpacity
                 onPress={this.openKeyboardOnClick.bind(this)}
                 style={styles.openModal}>
-                <Text style={{fontSize: 30, color:"#fff"}}>
-                Klavye
-                </Text>
+                  <Text style={{fontSize: 30, color:"#fff"}}>
+                  Klavye
+                  </Text>
               </TouchableOpacity>
-                </View>
+            </View>
 
-                <View>
-
+            <View>
 
             <Modal animationType = {"slide"} transparent = {false}
                visible = {this.state.modalVisible}
                onRequestClose = {() => { console.log("Modal has been closed.") } }>
-               <View style = {styles.modal}>
+              <View style = {styles.modal}>
+                 <TouchableOpacity
+                 disabled={true}
+                 style={styles.header}>
+                   <Text style={{fontSize: 30, color:"#fff"}}>
+                   AYARLAR
+                   </Text>
+                 </TouchableOpacity>
 
+                          <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
+                                    <SettingsList.Item
+                                        icon={<Text></Text>}
+                                        hasSwitch={true}
+                                        hasNavArrow={false}
+                                        title='Sol el'
+                                        titleStyle={{fontSize: 16}}
+                                        switchOnValueChange={this.solElChange.bind(this)}
+                                        switchState={this.state.solEl}
+                                      />
+                                      <SettingsList.Header headerStyle={{marginTop: -13}}/>
 
-               <TouchableOpacity
-               disabled={true}
-               style={styles.header}>
-               <Text style={{fontSize: 30, color:"#fff"}}>
-               AYARLAR
-               </Text>
-             </TouchableOpacity>
+                                      <SettingsList.Item
+                                        icon={
+                                          <View style={styles.imageStyle}>
+                                          <Text style={{marginLeft:"5%", fontSize:16}}>
+                                           Hassaslık
+                                          </Text>
+                                          <Slider
+                                            value={this.state.hassaslik}
+                                            step={1}
+                                            minimumValue={1}
+                                            maximumValue={20}
+                                            onValueChange={hassaslik => this.setState({hassaslik:hassaslik})}/>
+                                          </View>
+                                        }
+                                        hasNavArrow={false}
+                                    />
+                                    <SettingsList.Header headerStyle={{marginTop: -13}}/>
 
-              <Text>
-                Sağ el
-              </Text>
+                                    <SettingsList.Item
+                                        switchOnValueChange={this.tersineKaydirmaChange.bind(this)}
+                                        switchState={this.state.tersineKaydirma}
+                                        hasSwitch={true}
+                                        hasNavArrow={false}
+                                        title='Tersine Kaydırma'
+                                        titleStyle={{fontSize: 16}}
+                                      />
 
-                  <Switch
-                    onValueChange={leftRightHand => this.setState({leftRightHand})}
-                    value={this.state.leftRightHand}
-                    />
-                    <Text>
-                      Hassaslık
-                    </Text>
-                    <Slider
-                      value={this.state.valueSlider}
-                      step={1}
-                      minimumValue={1}
-                      maximumValue={20}
-                      onValueChange={valueSlider => this.setState({valueSlider:valueSlider})}
-                    />
-                    <Text>
-                      Value: {this.state.valueSlider}
-                    </Text>
-
-                    <Text>
-
-
-                      Tersine olayı
-                    </Text>
-                    <Switch
-                      onValueChange={leftRightHand => this.setState({leftRightHand})}
-                      value={this.state.leftRightHand}
-                      />
-
-
-                    <TouchableOpacity
-                    onPress = {() => {
-                       this.toggleModal(!this.state.modalVisible)}}
-                    style={styles.openModal}>
-                    <Text style={{fontSize: 30, color:"#fff"}}>
-                    KAYDET
-                    </Text>
-                  </TouchableOpacity>
+                          </SettingsList>
+                          <TouchableOpacity
+                          onPress = {() => {
+                             this.toggleModal(!this.state.modalVisible)}}
+                          style={styles.openModal}>
+                          <Text style={{fontSize: 30, color:"#fff"}}>
+                          KAYDET
+                          </Text>
+                        </TouchableOpacity>
 
                </View>
             </Modal>
@@ -284,5 +333,12 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
+  imageStyle:{
+    alignSelf:'center',
+    width:'100%',
+    height:1,
+    marginLeft:15,
+    justifyContent:'center'
+}
 });

@@ -12,6 +12,7 @@ import {
 
 import WifiOperations from './WifiOperations.js'
 import Bluetooth from './Bluetooth.js'
+import KeyboardAndMousePageWifi from './KeyboardAndMousePageWifi';
 
 function float2int (value) {
     return value | 0;
@@ -26,8 +27,8 @@ const getDirectionAndColor = ({ moveX, moveY, dx, dy }) => {
   const draggedRight = dx > 10;
   let dragDirection = "";
 
-    dragDirection += float2int(dx)+"/";
-    dragDirection += float2int(dy);
+    dragDirection += float2int(dx)*KeyboardAndMousePageWifi.getHassaslik()+"/";
+    dragDirection += float2int(dy)*KeyboardAndMousePageWifi.getHassaslik();
 
   WifiOperations.send("mouse/"+dragDirection)
   if (dragDirection) return dragDirection;

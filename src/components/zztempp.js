@@ -23,3 +23,13 @@ this.props
                         Value: {this.state.valueSlider}
                       </Text>
                     </View>
+
+WifiOperations.send
+
+
+componentDidMount(){
+  WifiOperations.connect(this.props.navigation.state.params.ip)
+}
+// on success içerisine
+
+this.toggleModal(!this.state.modalVisible)

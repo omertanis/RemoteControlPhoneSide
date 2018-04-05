@@ -9,21 +9,48 @@ import {
   BackHandler,
   TouchableOpacity,
   Modal,
+  TouchableHighlight
 } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import RadioButton from 'radio-button-react-native';
 import Slider from "react-native-slider";
-import BluetoothConnect from './BluetoothConnect';
+import BluetoothSerial from 'react-native-bluetooth-serial'
+import Toast from '@remobile/react-native-toast';
+import KeyboardAndMousePageWifi from './KeyboardAndMousePageWifi.js';
+
+import Bluetooth from './Bluetooth.js'
+import QRCodeScanner from 'react-native-qrcode-scanner';
+
+var net = require('net');
+var client;
+
 export default class MainPage extends Component<Props> {
   constructor (props){
     super(props)
       this.state = {
             value: "Bluetooth",
+            modalBluetoothVisible: false,
+            modalVisible: false,
         }
 }
 
+toggleModalBluetooth(visible) {
+      this.setState({ modalBluetoothVisible: visible });
+   }
+
+   toggleModal(visible) {
+         this.setState({ modalVisible: visible });
+      }
 
 handleBackButtonClick() {
-  this.props.navigation.pop();
+  console.log("/////////////-----------------------//////////////////");
+  console.log(this.props.navigation);
+  console.log("/////////////-----------------------//////////////////");
+
+  NavigationActions.navigate({ routeName: 'MainPage' })
+  setTimeout(function() {
+    Bluetooth.disable();
+}, 1000);
 }
 
 componentDidMount(){
@@ -42,11 +69,54 @@ handleOnPress(value){
   searchButtonOnClick(){
 
     if(this.state.value == "Bluetooth"){
-       this.props.navigation.navigate('ConnectPage');
+      this.toggleModalBluetooth(true)
+       // this.props.navigation.navigate('ConnectPage');
 
     }else if(this.state.value == "Wi-Fi"){
-       this.props.navigation.navigate('ConnectWifiPage');
+      this.toggleModal(true)
+       // this.props.navigation.navigate('ConnectWifiPage');
     }
+
+  }
+
+  onSuccess(e) {
+    console.log(e);
+    Toast.showShortBottom(e.data)
+    var ip = e.data;
+if(net.isIP(ip)){
+  this.props.navigation.push({
+    name: KeyboardAndMousePageWifi,
+    passProps: {
+      url: 'www.xyz.com',
+      data: 'abc'
+    }
+  })
+  this.props.navigation.navigate('KeyboardAndMousePageWifi', {"ip":ip});
+  this.toggleModal(!this.state.modalVisible);
+}
+}
+
+
+
+  onSuccessBluetooth(e) {
+    try{
+
+    var result = Bluetooth.connect(e.data);
+    var that = this;
+    setTimeout(function() {
+      var resultConnect = Bluetooth.resultConnect();
+      if(resultConnect){
+        that.props.navigation.navigate('KeyboardAndMousePage');
+        that.toggleModalBluetooth(!that.state.modalBluetoothVisible);
+      }
+      else {
+        Toast.showShortBottom("Hata oluştu tekrar deneyiniz.");
+      }
+}, 2000);
+}catch(err) {
+  console.log(err);
+}
+
 
   }
 
@@ -86,6 +156,50 @@ handleOnPress(value){
       Cihaz ara
       </Text>
     </TouchableOpacity>
+
+
+    <Modal animationType = {"slide"} transparent = {false}
+               visible = {this.state.modalBluetoothVisible}
+               onRequestClose = {() => { console.log("Modal has been closed.") } }>
+               <QRCodeScanner
+                 onRead={this.onSuccessBluetooth.bind(this)}
+                 topContent={(
+                   <Text style={styles.centerText}>
+                     Lütfen cihazınızda oluşturulan <Text style={styles.buttonText}>QR</Text> kodunu okutunuz.
+                   </Text>
+                 )}
+                 bottomContent={(
+                   <TouchableOpacity
+                   onPress={this.toggleModalBluetooth.bind(this,!this.state.modalBluetoothVisible)}
+                   style={styles.buttonTouchable}>
+                     <Text style={styles.buttonText}>Bluetooth!</Text>
+                   </TouchableOpacity>
+                 )}
+               />
+            </Modal>
+
+
+            <Modal animationType = {"slide"} transparent = {false}
+               visible = {this.state.modalVisible}
+               onRequestClose = {() => { console.log("Modal has been closed.") } }>
+               <QRCodeScanner
+                 onRead={this.onSuccess.bind(this)}
+                 topContent={(
+                   <Text style={styles.centerText}>
+                     Lütfen cihazınızda oluşturulan <Text style={styles.buttonText}>QR</Text> kodunu okutunuz.
+                   </Text>
+                 )}
+                 bottomContent={(
+                   <TouchableOpacity
+                   onPress={this.toggleModal.bind(this,!this.state.modalVisible)}
+                   style={styles.buttonTouchable}>
+                     <Text style={styles.buttonText}>Wi-Fi!</Text>
+                   </TouchableOpacity>
+                 )}
+               />
+
+            </Modal>
+
 
       </View>
     );
@@ -143,5 +257,25 @@ const styles = StyleSheet.create({
   slider: {
     transform: [{ rotate: '90deg'}],
     backgroundColor: '#FFF'
-  }
+  },
+  centerText: {
+    flex: 1,
+    fontSize: 18,
+    padding: 28,
+    color: '#777',
+  },
+
+  textBold: {
+    fontWeight: '500',
+    color: '#000',
+  },
+
+  buttonText: {
+    fontSize: 18,
+    color: 'rgb(0,122,255)',
+  },
+
+  buttonTouchable: {
+    padding: 16,
+}
 })
