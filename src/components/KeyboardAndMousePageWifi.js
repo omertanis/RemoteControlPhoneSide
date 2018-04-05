@@ -61,6 +61,7 @@ export default class KeyboardAndMousePage extends Component {
 
     componentDidMount(){
       WifiOperations.connect(this.props.navigation.state.params.ip)
+      console.log("componentDidMount wifi");
     }
 
 

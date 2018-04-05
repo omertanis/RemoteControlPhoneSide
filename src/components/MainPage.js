@@ -17,7 +17,7 @@ import Slider from "react-native-slider";
 import BluetoothSerial from 'react-native-bluetooth-serial'
 import Toast from '@remobile/react-native-toast';
 import KeyboardAndMousePageWifi from './KeyboardAndMousePageWifi.js';
-
+import WifiOperations from './WifiOperations.js';
 import Bluetooth from './Bluetooth.js'
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
@@ -43,10 +43,6 @@ toggleModalBluetooth(visible) {
       }
 
 handleBackButtonClick() {
-  console.log("/////////////-----------------------//////////////////");
-  console.log(this.props.navigation);
-  console.log("/////////////-----------------------//////////////////");
-
   NavigationActions.navigate({ routeName: 'MainPage' })
   setTimeout(function() {
     Bluetooth.disable();
@@ -70,6 +66,7 @@ handleOnPress(value){
 
     if(this.state.value == "Bluetooth"){
       this.toggleModalBluetooth(true)
+      Bluetooth.enable()
        // this.props.navigation.navigate('ConnectPage');
 
     }else if(this.state.value == "Wi-Fi"){
@@ -83,16 +80,15 @@ handleOnPress(value){
     console.log(e);
     Toast.showShortBottom(e.data)
     var ip = e.data;
-if(net.isIP(ip)){
-  this.props.navigation.push({
-    name: KeyboardAndMousePageWifi,
-    passProps: {
-      url: 'www.xyz.com',
-      data: 'abc'
-    }
-  })
+    // console.log(net.isIP(ip));
+    if(net.isIP(ip)==4){
   this.props.navigation.navigate('KeyboardAndMousePageWifi', {"ip":ip});
   this.toggleModal(!this.state.modalVisible);
+}
+else{
+  Toast.showShortBottom("QR kodu hatalı tekrar deneiniz...");
+  this.toggleModal(!this.state.modalVisible);
+
 }
 }
 
@@ -100,19 +96,24 @@ if(net.isIP(ip)){
 
   onSuccessBluetooth(e) {
     try{
-
-    var result = Bluetooth.connect(e.data);
+      console.log(net.isIP(e.data));
+      if (net.isIP(e.data) == 6) {
+        var result = Bluetooth.connect(e.data);
+      }
+      console.log("result: "+ result);
     var that = this;
-    setTimeout(function() {
-      var resultConnect = Bluetooth.resultConnect();
-      if(resultConnect){
-        that.props.navigation.navigate('KeyboardAndMousePage');
+
+      setTimeout(function() {
+        var resultConnect = Bluetooth.resultConnect();
+        if(resultConnect){
+          that.props.navigation.navigate('KeyboardAndMousePage');
+        }
+        else {
+          Toast.showShortBottom("QR kodu hatalı tekrar deneiniz...");
+        }
         that.toggleModalBluetooth(!that.state.modalBluetoothVisible);
-      }
-      else {
-        Toast.showShortBottom("Hata oluştu tekrar deneyiniz.");
-      }
-}, 2000);
+  }, 2000);
+
 }catch(err) {
   console.log(err);
 }
