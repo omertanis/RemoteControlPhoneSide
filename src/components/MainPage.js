@@ -1,29 +1,23 @@
 import React, { Component } from 'react';
 import {
-  Platform,
   StyleSheet,
   Text,
   View,
-  Button,
   Image,
   BackHandler,
   TouchableOpacity,
   Modal,
-  TouchableHighlight
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import RadioButton from 'radio-button-react-native';
-import Slider from "react-native-slider";
-import BluetoothSerial from 'react-native-bluetooth-serial'
 import Toast from '@remobile/react-native-toast';
-import KeyboardAndMousePageWifi from './KeyboardAndMousePageWifi.js';
-import WifiOperations from './WifiOperations.js';
-import Bluetooth from './Bluetooth.js'
+import BluetoothOperations from './BluetoothOperations.js'
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
 var net = require('net');
 var client;
 
+var choose="";
 export default class MainPage extends Component<Props> {
   constructor (props){
     super(props)
@@ -32,6 +26,10 @@ export default class MainPage extends Component<Props> {
             modalBluetoothVisible: false,
             modalVisible: false,
         }
+}
+
+static getChoose(){
+  return choose;
 }
 
 toggleModalBluetooth(visible) {
@@ -45,7 +43,7 @@ toggleModalBluetooth(visible) {
 handleBackButtonClick() {
   NavigationActions.navigate({ routeName: 'MainPage' })
   setTimeout(function() {
-    Bluetooth.disable();
+    BluetoothOperations.disable();
 }, 1000);
 }
 
@@ -65,11 +63,13 @@ handleOnPress(value){
   searchButtonOnClick(){
 
     if(this.state.value == "Bluetooth"){
+      choose="Bluetooth";
       this.toggleModalBluetooth(true)
-      Bluetooth.enable()
+      BluetoothOperations.enable()
        // this.props.navigation.navigate('ConnectPage');
 
     }else if(this.state.value == "Wi-Fi"){
+      choose="Wi-Fi";
       this.toggleModal(true)
        // this.props.navigation.navigate('ConnectWifiPage');
     }
@@ -77,12 +77,11 @@ handleOnPress(value){
   }
 
   onSuccess(e) {
-    console.log(e);
     Toast.showShortBottom(e.data)
     var ip = e.data;
     // console.log(net.isIP(ip));
-    if(net.isIP(ip)==4){
-  this.props.navigation.navigate('KeyboardAndMousePageWifi', {"ip":ip});
+    if ((net.isIP(e.data) == 4) && (choose=="Wi-Fi"))  {
+  this.props.navigation.navigate('KeyboardAndMousePage', {"ip":ip});
   this.toggleModal(!this.state.modalVisible);
 }
 else{
@@ -97,14 +96,14 @@ else{
   onSuccessBluetooth(e) {
     try{
       console.log(net.isIP(e.data));
-      if (net.isIP(e.data) == 6) {
-        var result = Bluetooth.connect(e.data);
+      if ((net.isIP(e.data) == 6) && (choose=="Bluetooth"))  {
+        var result = BluetoothOperations.connect(e.data);
       }
       console.log("result: "+ result);
     var that = this;
 
       setTimeout(function() {
-        var resultConnect = Bluetooth.resultConnect();
+        var resultConnect = BluetoothOperations.resultConnect();
         if(resultConnect){
           that.props.navigation.navigate('KeyboardAndMousePage');
         }
@@ -253,11 +252,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width:"90%",
     marginLeft:"5%",
-
-  },
-  slider: {
-    transform: [{ rotate: '90deg'}],
-    backgroundColor: '#FFF'
   },
   centerText: {
     flex: 1,

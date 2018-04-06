@@ -1,6 +1,5 @@
 import MainPage from './src/components/MainPage.js'
 import KeyboardAndMousePage from './src/components/KeyboardAndMousePage.js'
-import KeyboardAndMousePageWifi from './src/components/KeyboardAndMousePageWifi.js'
 
 // import ModalExample from './src/components/ModalExample.ks'
 
@@ -24,9 +23,6 @@ const RootStack = StackNavigator(
     },
     KeyboardAndMousePage: {
       screen: KeyboardAndMousePage,
-    },
-    KeyboardAndMousePageWifi: {
-      screen: KeyboardAndMousePageWifi,
     },
   },
   {

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import {
-  StatusBar,
-  AppRegistry,
   StyleSheet,
   Text,
   View,
@@ -10,10 +8,10 @@ import {
   Dimensions,
 } from "react-native";
 
-import WifiOperations from './WifiOperations.js'
-import Bluetooth from './Bluetooth.js'
-import KeyboardAndMousePageWifi from './KeyboardAndMousePageWifi';
-
+import BluetoothOperations from './BluetoothOperations.js'
+import KeyboardAndMousePage from './KeyboardAndMousePage';
+import MainPage from './MainPage.js';
+import WifiOperations from './WifiOperations.js';
 function float2int (value) {
     return value | 0;
 }
@@ -26,11 +24,15 @@ const getDirectionAndColor = ({ moveX, moveY, dx, dy }) => {
   const draggedLeft = dx < -10;
   const draggedRight = dx > 10;
   let dragDirection = "";
+    dragDirection += float2int(dx)*KeyboardAndMousePage.getHassaslik()+"/";
+    dragDirection += float2int(dy)*KeyboardAndMousePage.getHassaslik();
 
-    dragDirection += float2int(dx)*KeyboardAndMousePageWifi.getHassaslik()+"/";
-    dragDirection += float2int(dy)*KeyboardAndMousePageWifi.getHassaslik();
-
-  WifiOperations.send("mouse/"+dragDirection)
+  if(MainPage.getChoose() == "Bluetooth"){
+    BluetoothOperations.test("mouse/"+dragDirection)
+  }
+  else{
+    WifiOperations.send("mouse/"+dragDirection)
+  }
   if (dragDirection) return dragDirection;
 };
 
@@ -46,15 +48,21 @@ export default class PanResponderTest extends Component {
     });
   }
 
-  buttonClicked(){
-    console.log("left")
-  }
+
   leftClickOnPress(){
-    WifiOperations.send("mouse/left");
+    if(MainPage.getChoose() == "Bluetooth"){
+    BluetoothOperations.test("mouse/left");
+  }else{
+    WifiOperations.send("mouse/left")
   }
+}
 
   rightClickOnPress(){
+    if(MainPage.getChoose() == "Bluetooth"){
+    BluetoothOperations.test("mouse/right");
+  }else{
     WifiOperations.send("mouse/right");
+  }
   }
 
   render() {
@@ -73,6 +81,9 @@ export default class PanResponderTest extends Component {
         </Text>
         <Text>
         Basılı tutmak Mouse sağ tuş
+        </Text>
+        <Text>
+        Scroll icin yan tarafi kullaniniz
         </Text>
         </View>
         </TouchableOpacity>

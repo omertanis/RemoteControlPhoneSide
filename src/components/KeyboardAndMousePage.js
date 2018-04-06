@@ -1,30 +1,21 @@
 import React, { Component } from 'react';
 import {
-  Platform,
   StyleSheet,
   Text,
   View,
-  Button,
   TextInput,
-  TouchableHighlight,
-  BackHandler,
-  ScrollView,
   TouchableOpacity,
   Modal,
-  Switch,
   Slider,
 } from 'react-native';
 import BluetoothSerial from 'react-native-bluetooth-serial'
-import Bluetooth from './Bluetooth.js'
-import IndexPage from './IndexPage.js';
-import PanResponderBluetooth from './PanResponderBluetooth.js'
-import PanResponderBluetoothSlider from './PanResponderBluetoothSlider.js'
-import RadioButton from 'radio-button-react-native';
+import BluetoothOperations from './BluetoothOperations.js'
+import PanResponderMouse from './PanResponderMouse.js'
+import PanResponderSlider from './PanResponderSlider.js'
 import { NavigationActions } from 'react-navigation';
-import Toast from '@remobile/react-native-toast'
 import SettingsList from 'react-native-settings-list';
-
-
+import MainPage from './MainPage.js';
+import WifiOperations from './WifiOperations';
 let solEl = false;
 let hassaslik = 6.0;
 let tersineKaydirma = false;
@@ -55,19 +46,24 @@ export default class KeyboardAndMousePage extends Component {
     }
 
 componentWillMount(){
-  
-  BluetoothSerial.on('connectionLost', () => {
 
-    this.props
-               .navigation
-               .dispatch(NavigationActions.reset(
-                 {
-                    index: 0,
-                    actions: [
-                      NavigationActions.navigate({ routeName: 'MainPage'})
-                    ]
-                  }));
-  })
+  if(MainPage.getChoose() == "Bluetooth"){
+
+    BluetoothSerial.on('connectionLost', () => {
+
+      this.props
+      .navigation
+      .dispatch(NavigationActions.reset(
+        {
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'MainPage'})
+          ]
+        }));
+      })
+  }else{
+    WifiOperations.connect(this.props.navigation.state.params.ip)
+  }
 
 
 }
@@ -83,27 +79,50 @@ componentWillMount(){
    }
 
    onKeyPress = ({ nativeEvent: { key } }) => {
-     Bluetooth.test(key)
+     if(MainPage.getChoose() == "Bluetooth"){
+     BluetoothOperations.test(key)
+   }else{
+     WifiOperations.send(key)
+   }
      this.refs.input1.clear();
      this.refs.input2.clear();
 };
 
 leftClickOnPress(){
+  if(MainPage.getChoose() == "Bluetooth"){
+
   if(this.state.solEl){
-    Bluetooth.test("mouse/right")
+    BluetoothOperations.test("mouse/right")
   }
   else{
-    Bluetooth.test("mouse/left")
+    BluetoothOperations.test("mouse/left")
+  }
+}
+  else{
+    if(this.state.solEl){
+      WifiOperations.send("mouse/right")
+    }
+    else{
+      WifiOperations.send("mouse/left")
+    }
   }
 }
 
-rightClickOnPress(){
-  if(this.state.solEl){
-    Bluetooth.test("mouse/left");
-}
-else {
-  Bluetooth.test("mouse/right");
-}
+rightClickOnPress() {
+  if (MainPage.getChoose() == "Bluetooth") {
+
+    if (this.state.solEl) {
+      BluetoothOperations.test("mouse/left");
+    } else {
+      BluetoothOperations.test("mouse/right");
+    }
+  } else {
+    if (this.state.solEl) {
+      WifiOperations.send("mouse/left");
+    } else {
+      WifiOperations.send("mouse/right");
+    }
+  }
 }
 
 solElChange(value){
@@ -170,11 +189,11 @@ openModal(){
             <View style={styles.mouseButton}>
 
               <View style={styles.panresponderMouse}>
-              <PanResponderBluetooth/>
+              <PanResponderMouse/>
               </View>
 
               <View style= {styles.panresponderScroll}>
-              <PanResponderBluetoothSlider/>
+              <PanResponderSlider/>
               </View>
 
             </View>
