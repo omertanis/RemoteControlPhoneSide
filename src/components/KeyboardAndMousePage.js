@@ -16,6 +16,8 @@ import { NavigationActions } from 'react-navigation';
 import SettingsList from 'react-native-settings-list';
 import MainPage from './MainPage.js';
 import WifiOperations from './WifiOperations';
+var net = require('net');
+
 let solEl = false;
 let hassaslik = 6.0;
 let tersineKaydirma = false;
@@ -28,7 +30,8 @@ export default class KeyboardAndMousePage extends Component {
         modalVisible: false,
         solEl: false,
         hassaslik:6.0,
-        tersineKaydirma:false
+        tersineKaydirma:false,
+        value:"..........."
       };
     }
 
@@ -62,6 +65,25 @@ componentWillMount(){
         }));
       })
   }else{
+    var that = this;
+    var ip = this.props.navigation.state.params.ip
+    client = net.createConnection(8090, ip);
+      client.on('error', function(error) {
+        console.log("**************ERROR**************");
+        that.props
+        .navigation
+        .dispatch(NavigationActions.reset(
+          {
+            index: 0,
+            actions: [
+              NavigationActions.navigate({ routeName: 'MainPage'})
+            ]
+          }));
+
+
+        console.log("---------------ERROR---------------");
+      });
+
     WifiOperations.connect(this.props.navigation.state.params.ip)
   }
 
@@ -84,8 +106,6 @@ componentWillMount(){
    }else{
      WifiOperations.send(key)
    }
-     this.refs.input1.clear();
-     this.refs.input2.clear();
 };
 
 leftClickOnPress(){
@@ -141,6 +161,7 @@ openKeyboardOnClick(){
     this.refs.input2.focus();
     this.setState({nextInput: "input1"})
   }
+
 }
 openModal(){
   this.toggleModal(true);
@@ -153,13 +174,18 @@ openModal(){
             <View style={{height: 0, width:"100%", borderColor: 'gray', borderWidth: 1}}>
               <TextInput
               ref = "input1"
-              secureTextEntry={true}
+              spellCheck={true}
+              autoCorrect={true}
+              keyboardType="default"
+              value={this.state.value}
               onKeyPress={this.onKeyPress}/>
 
               <TextInput
               ref = "input2"
-              autoFocus={true}
-              secureTextEntry={true}
+              keyboardType="default"
+              autoCorrect={false}
+              spellCheck={false}
+              value={this.state.value}
               onKeyPress={this.onKeyPress}/>
             </View>
 
@@ -170,7 +196,7 @@ openModal(){
               onPress={this.leftClickOnPress.bind(this)}
               style={styles.button}>
                 <Text style={{fontSize: 22, color:"#fff"}}>
-                Left
+                Sol
                 </Text>
               </TouchableOpacity>
 
@@ -179,7 +205,7 @@ openModal(){
               onPress={this.rightClickOnPress.bind(this)}
               style={styles.button}>
                 <Text style={{fontSize: 22, color:"#fff"}}>
-                Right
+                Sağ
                 </Text>
               </TouchableOpacity>
 
@@ -192,12 +218,8 @@ openModal(){
               <PanResponderMouse/>
               </View>
 
-              <View style= {styles.panresponderScroll}>
-              <PanResponderSlider/>
-              </View>
 
-            </View>
-
+</View>
             <View style ={{ marginTop: "2%"}}>
               <TouchableOpacity
                 onPress={this.openKeyboardOnClick.bind(this)}
@@ -212,7 +234,7 @@ openModal(){
 
             <Modal animationType = {"slide"} transparent = {false}
                visible = {this.state.modalVisible}
-               onRequestClose = {() => { console.log("Modal has been closed.") } }>
+               onRequestClose = {() => {  this.setState({modalVisible: false})} }>
               <View style = {styles.modal}>
                  <TouchableOpacity
                  disabled={true}
@@ -244,7 +266,7 @@ openModal(){
                                             value={this.state.hassaslik}
                                             step={1}
                                             minimumValue={1}
-                                            maximumValue={20}
+                                            maximumValue={100}
                                             onValueChange={hassaslik => this.setState({hassaslik:hassaslik})}/>
                                           </View>
                                         }
@@ -265,7 +287,7 @@ openModal(){
                           <TouchableOpacity
                           onPress = {() => {
                              this.toggleModal(!this.state.modalVisible)}}
-                          style={styles.openModal}>
+                          style={styles.modalButton}>
                           <Text style={{fontSize: 30, color:"#fff"}}>
                           KAYDET
                           </Text>
@@ -327,10 +349,7 @@ const styles = StyleSheet.create({
     // marginLeft:"25%",
   },
   panresponderMouse: {
-    width: "90%",
-  },
-  panresponderScroll: {
-    width: "10%",
+    width: "100%",
     height: 400
   },
   openKeyboardButton: {
@@ -346,6 +365,15 @@ const styles = StyleSheet.create({
     width:"50%",
     marginLeft:"25%",
     marginTop: "2%"
+  },
+  modalButton:{
+    backgroundColor: '#299FD2',
+    borderRadius: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width:"50%",
+    marginLeft:"25%",
+    marginTop: "10%"
   },
   header: {
     backgroundColor: '#299FD2',

@@ -160,7 +160,7 @@ else{
 
     <Modal animationType = {"slide"} transparent = {false}
                visible = {this.state.modalBluetoothVisible}
-               onRequestClose = {() => { console.log("Modal has been closed.") } }>
+               onRequestClose = {() => { this.setState({modalBluetoothVisible: false}) } }>
                <QRCodeScanner
                  onRead={this.onSuccessBluetooth.bind(this)}
                  topContent={(
@@ -181,7 +181,7 @@ else{
 
             <Modal animationType = {"slide"} transparent = {false}
                visible = {this.state.modalVisible}
-               onRequestClose = {() => { console.log("Modal has been closed.") } }>
+               onRequestClose = {() => { this.setState({modalVisible: false}) } }>
                <QRCodeScanner
                  onRead={this.onSuccess.bind(this)}
                  topContent={(

@@ -18,22 +18,41 @@ function float2int (value) {
 
 const { width, height } = Dimensions.get("window");
 
-const getDirectionAndColor = ({ moveX, moveY, dx, dy }) => {
-  const draggedDown = dy > 10;
-  const draggedUp = dy < -10;
-  const draggedLeft = dx < -10;
-  const draggedRight = dx > 10;
-  let dragDirection = "";
+const getDirectionAndColor = ({ moveX, moveY, dx, dy, numberActiveTouches }) => {
+  if(numberActiveTouches==1){
+    const draggedDown = dy > 10;
+    const draggedUp = dy < -10;
+    const draggedLeft = dx < -10;
+    const draggedRight = dx > 10;
+    let dragDirection = "";
     dragDirection += float2int(dx)*KeyboardAndMousePage.getHassaslik()+"/";
     dragDirection += float2int(dy)*KeyboardAndMousePage.getHassaslik();
 
-  if(MainPage.getChoose() == "Bluetooth"){
-    BluetoothOperations.test("mouse/"+dragDirection)
+    if(MainPage.getChoose() == "Bluetooth"){
+      BluetoothOperations.test("mouse/"+dragDirection)
+    }
+    else{
+      WifiOperations.send("mouse/"+dragDirection)
+    }
+    if (dragDirection) return dragDirection;
+
+  }else if(numberActiveTouches ==2){
+    const draggedDown = dy > 10;
+    const draggedUp = dy < -10;
+    const draggedLeft = dx < -10;
+    const draggedRight = dx > 10;
+    let dragDirection = "";
+
+      dragDirection += float2int(dy)*KeyboardAndMousePage.getTersineKaydirma();
+      if(dragDirection != "" && MainPage.getChoose() == "Bluetooth"){
+        BluetoothOperations.test("mouse/scroll/"+dragDirection);
+      }else if(dragDirection != "" && MainPage.getChoose() == "Wi-Fi"){
+        WifiOperations.send("mouse/scroll/"+dragDirection);
+      }
+
+    if (dragDirection) return dragDirection;
+
   }
-  else{
-    WifiOperations.send("mouse/"+dragDirection)
-  }
-  if (dragDirection) return dragDirection;
 };
 
 export default class PanResponderTest extends Component {
@@ -69,7 +88,7 @@ export default class PanResponderTest extends Component {
     return (
       <View style={styles.container} {...this._panResponder.panHandlers}>
         <View style={styles.center}>
-        <TouchableOpacity style={{backgroundColor: "#d7dbe2"}}
+        <TouchableOpacity style={{backgroundColor: "#b3c6e5"}}
         onPress={this.leftClickOnPress.bind(this)}
         onLongPress={this.rightClickOnPress.bind(this)} >
         <View style={styles.description}>
@@ -77,13 +96,13 @@ export default class PanResponderTest extends Component {
         Mouseun gitmesini istediğiniz yöne doğru çekiniz.
         </Text>
         <Text>
-        Tek tıklamak Mouse sol tuş
+        Mouse sol tuşu için tek tıklayınız.
         </Text>
         <Text>
-        Basılı tutmak Mouse sağ tuş
+        Mouse sağ tuşu için basılı tutunuz.
         </Text>
         <Text>
-        Scroll icin yan tarafi kullaniniz
+        Scroll icin iki parmağınızı kullanınız.
         </Text>
         </View>
         </TouchableOpacity>
