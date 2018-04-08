@@ -79,9 +79,32 @@ handleOnPress(value){
   onSuccess(e) {
     Toast.showShortBottom(e.data)
     var ip = e.data;
+    var that = this;
     // console.log(net.isIP(ip));
     if ((net.isIP(e.data) == 4) && (choose=="Wi-Fi"))  {
-  this.props.navigation.navigate('KeyboardAndMousePage', {"ip":ip});
+
+    client = net.createConnection(8090, ip, () => {
+        client.write('Hello, server! Love, Client.');
+        this.props.navigation.navigate('KeyboardAndMousePage', {"ip":ip});
+  });
+
+  client.on('error', function(error) {
+    console.log("**************ERROR**************");
+    that.props
+    .navigation
+    .dispatch(NavigationActions.reset(
+      {
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'MainPage'})
+        ]
+      }));
+
+    console.log("---------------ERROR---------------");
+
+
+    console.log("Error verdi pnp ...........");
+  })
   this.toggleModal(!this.state.modalVisible);
 }
 else{

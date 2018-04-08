@@ -65,25 +65,6 @@ componentWillMount(){
         }));
       })
   }else{
-    var that = this;
-    var ip = this.props.navigation.state.params.ip
-    client = net.createConnection(8090, ip);
-      client.on('error', function(error) {
-        console.log("**************ERROR**************");
-        that.props
-        .navigation
-        .dispatch(NavigationActions.reset(
-          {
-            index: 0,
-            actions: [
-              NavigationActions.navigate({ routeName: 'MainPage'})
-            ]
-          }));
-
-
-        console.log("---------------ERROR---------------");
-      });
-
     WifiOperations.connect(this.props.navigation.state.params.ip)
   }
 

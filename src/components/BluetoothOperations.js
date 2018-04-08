@@ -17,17 +17,11 @@ class Bluetooth {
     try{
       BluetoothSerial.connect(id)
       .then((res) => {
-        Toast.showShortBottom(`Connected to device`+ id);
         isConnected = true;
-        console.log("isConnected:"+ isConnected);
       })
       .catch((err) => {
-        console.log("---------------");
-        console.log("HATA");
         Toast.showShortBottom(err.message);
         isConnected = false;
-        console.log("isConnected:"+ isConnected);
-
       })
     }
     catch(err) {
