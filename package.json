@@ -20,6 +20,7 @@
     "react-native-qrcode-scanner": "0.0.30",
     "react-native-settings-list": "^1.8.0",
     "react-native-slider": "^0.11.0",
+    "react-native-tab-view": "0.0.77",
     "react-native-tcp": "^3.3.0",
     "react-native-udp": "^2.3.1",
     "react-navigation": "^1.5.0",

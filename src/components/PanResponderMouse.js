@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 import BluetoothOperations from './BluetoothOperations.js'
-import KeyboardAndMousePage from './KeyboardAndMousePage';
+import MousePage from './MousePage';
 import MainPage from './MainPage.js';
 import WifiOperations from './WifiOperations.js';
 function float2int (value) {
@@ -26,8 +26,8 @@ const getDirectionAndColor = ({ moveX, moveY, dx, dy, numberActiveTouches }) => 
     const draggedLeft = dx < -10;
     const draggedRight = dx > 10;
     let dragDirection = "";
-    dragDirection += (float2int(dx)-float2int(olddx))*KeyboardAndMousePage.getHassaslik()+"/";
-    dragDirection += (float2int(dy)-float2int(olddy))*KeyboardAndMousePage.getHassaslik();
+    dragDirection += (float2int(dx)-float2int(olddx))*MousePage.getHassaslik()+"/";
+    dragDirection += (float2int(dy)-float2int(olddy))*MousePage.getHassaslik();
 
     olddx=float2int(dx);
     olddy=float2int(dy);
@@ -46,7 +46,7 @@ const getDirectionAndColor = ({ moveX, moveY, dx, dy, numberActiveTouches }) => 
     const draggedRight = dx > 10;
     let dragDirection = "";
 
-      dragDirection += float2int(dy)*KeyboardAndMousePage.getTersineKaydirma();
+      dragDirection += float2int(dy)*MousePage.getTersineKaydirma();
       if(dragDirection != "" && MainPage.getChoose() == "Bluetooth"){
         BluetoothOperations.test("mouse/scroll/"+dragDirection);
       }else if(dragDirection != "" && MainPage.getChoose() == "Wi-Fi"){

@@ -7,15 +7,16 @@ import {
   TouchableOpacity,
   Modal,
   Slider,
+  ScrollView
 } from 'react-native';
 import BluetoothSerial from 'react-native-bluetooth-serial'
 import BluetoothOperations from './BluetoothOperations.js'
 import PanResponderMouse from './PanResponderMouse.js'
-import PanResponderSlider from './PanResponderSlider.js'
 import { NavigationActions } from 'react-navigation';
 import SettingsList from 'react-native-settings-list';
 import MainPage from './MainPage.js';
 import WifiOperations from './WifiOperations';
+import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 var net = require('net');
 
 let solEl = false;
@@ -48,28 +49,7 @@ export default class KeyboardAndMousePage extends Component {
       }
     }
 
-componentWillMount(){
 
-  if(MainPage.getChoose() == "Bluetooth"){
-
-    BluetoothSerial.on('connectionLost', () => {
-
-      this.props
-      .navigation
-      .dispatch(NavigationActions.reset(
-        {
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'MainPage'})
-          ]
-        }));
-      })
-  }else{
-    WifiOperations.connect(this.props.navigation.state.params.ip)
-  }
-
-
-}
     toggleModal(visible) {
       this.setState({ modalVisible: visible });
 
@@ -83,9 +63,9 @@ componentWillMount(){
 
    onKeyPress = ({ nativeEvent: { key } }) => {
      if(MainPage.getChoose() == "Bluetooth"){
-     BluetoothOperations.test(key)
+     BluetoothOperations.test("keyboard/"+key)
    }else{
-     WifiOperations.send(key)
+     WifiOperations.send("keyboard/"+key)
    }
 };
 
@@ -128,9 +108,9 @@ rightClickOnPress() {
 
 searchSubmit(){
   if (MainPage.getChoose() == "Bluetooth") {
-    BluetoothOperations.test("Enter");
+    BluetoothOperations.test("keyboard/Enter");
 }else{
-  WifiOperations.send("Enter")
+  WifiOperations.send("keyboard/Enter")
 }
 }
 
@@ -150,15 +130,15 @@ openKeyboardOnClick(){
     this.refs.input2.focus();
     this.setState({nextInput: "input1"})
   }
-
 }
+
 openModal(){
   this.toggleModal(true);
 }
 
   render() {
     return (
-      <View style={{backgroundColor:"#b4b9c1", height:"100%"}}>
+      <ScrollView style={{backgroundColor:"#b4b9c1", height:"100%"}}>
 
             <View style={{height: 0, width:"100%", borderColor: 'gray', borderWidth: 1}}>
               <TextInput
@@ -298,7 +278,7 @@ openModal(){
 
          </View>
 
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -341,7 +321,7 @@ const styles = StyleSheet.create({
   },
   panresponderMouse: {
     width: "100%",
-    height: 400
+    height: 380
   },
   openKeyboardButton: {
     backgroundColor: 'red',

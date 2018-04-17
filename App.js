@@ -1,5 +1,6 @@
 import MainPage from './src/components/MainPage.js'
-import KeyboardAndMousePage from './src/components/KeyboardAndMousePage.js'
+import MousePage from './src/components/MousePage.js'
+import Tabs from './src/components/Tabs.js'
 
 // import ModalExample from './src/components/ModalExample.ks'
 
@@ -21,8 +22,8 @@ const RootStack = StackNavigator(
     MainPage: {
       screen: MainPage,
     },
-    KeyboardAndMousePage: {
-      screen: KeyboardAndMousePage,
+    MousePage: {
+      screen: Tabs,
     },
   },
   {

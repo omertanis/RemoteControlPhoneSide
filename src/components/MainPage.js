@@ -85,7 +85,7 @@ handleOnPress(value){
 
     client = net.createConnection(8090, ip, () => {
         client.write('Hello, server! Love, Client.');
-        this.props.navigation.navigate('KeyboardAndMousePage', {"ip":ip});
+        this.props.navigation.navigate('MousePage', {"ip":ip});
   });
 
   client.on('error', function(error) {
@@ -128,7 +128,7 @@ else{
       setTimeout(function() {
         var resultConnect = BluetoothOperations.resultConnect();
         if(resultConnect){
-          that.props.navigation.navigate('KeyboardAndMousePage');
+          that.props.navigation.navigate('MousePage');
         }
         else {
           Toast.showShortBottom("QR kodu hatalı tekrar deneiniz...");
