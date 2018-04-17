@@ -17,7 +17,8 @@ function float2int (value) {
 }
 
 const { width, height } = Dimensions.get("window");
-
+var olddx=0;
+var olddy=0;
 const getDirectionAndColor = ({ moveX, moveY, dx, dy, numberActiveTouches }) => {
   if(numberActiveTouches==1){
     const draggedDown = dy > 10;
@@ -25,9 +26,11 @@ const getDirectionAndColor = ({ moveX, moveY, dx, dy, numberActiveTouches }) => 
     const draggedLeft = dx < -10;
     const draggedRight = dx > 10;
     let dragDirection = "";
-    dragDirection += float2int(dx)*KeyboardAndMousePage.getHassaslik()+"/";
-    dragDirection += float2int(dy)*KeyboardAndMousePage.getHassaslik();
+    dragDirection += (float2int(dx)-float2int(olddx))*KeyboardAndMousePage.getHassaslik()+"/";
+    dragDirection += (float2int(dy)-float2int(olddy))*KeyboardAndMousePage.getHassaslik();
 
+    olddx=float2int(dx);
+    olddy=float2int(dy);
     if(MainPage.getChoose() == "Bluetooth"){
       BluetoothOperations.test("mouse/"+dragDirection)
     }
@@ -63,6 +66,10 @@ export default class PanResponderTest extends Component {
       onPanResponderMove: (evt, gestureState) => {
         const drag = getDirectionAndColor(gestureState);
       },
+      onPanResponderRelease: (evt, gestureState) => {
+        olddx=0;
+        olddy=0;
+      },
       onPanResponderTerminationRequest: (evt, gestureState) => true,
     });
   }
@@ -88,7 +95,7 @@ export default class PanResponderTest extends Component {
     return (
       <View style={styles.container} {...this._panResponder.panHandlers}>
         <View style={styles.center}>
-        <TouchableOpacity style={{backgroundColor: "#b3c6e5"}}
+        <TouchableOpacity style={{backgroundColor: "#b3c6e5", height:"100%"}}
         onPress={this.leftClickOnPress.bind(this)}
         onLongPress={this.rightClickOnPress.bind(this)} >
         <View style={styles.description}>
@@ -96,14 +103,15 @@ export default class PanResponderTest extends Component {
         Mouseun gitmesini istediğiniz yöne doğru çekiniz.
         </Text>
         <Text>
+        Scroll icin iki parmağınızı kullanınız.
+        </Text>
+        <Text>
         Mouse sol tuşu için tek tıklayınız.
         </Text>
         <Text>
         Mouse sağ tuşu için basılı tutunuz.
         </Text>
-        <Text>
-        Scroll icin iki parmağınızı kullanınız.
-        </Text>
+
         </View>
         </TouchableOpacity>
         </View>
@@ -133,5 +141,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: '40%'
   }
 });

@@ -19,7 +19,7 @@ import WifiOperations from './WifiOperations';
 var net = require('net');
 
 let solEl = false;
-let hassaslik = 6.0;
+let hassaslik = 50.0;
 let tersineKaydirma = false;
 export default class KeyboardAndMousePage extends Component {
 
@@ -29,7 +29,7 @@ export default class KeyboardAndMousePage extends Component {
         nextInput:"input1",
         modalVisible: false,
         solEl: false,
-        hassaslik:6.0,
+        hassaslik:50.0,
         tersineKaydirma:false,
         value:"..........."
       };
@@ -126,6 +126,14 @@ rightClickOnPress() {
   }
 }
 
+searchSubmit(){
+  if (MainPage.getChoose() == "Bluetooth") {
+    BluetoothOperations.test("Enter");
+}else{
+  WifiOperations.send("Enter")
+}
+}
+
 solElChange(value){
   this.setState({solEl:value})
 }
@@ -159,6 +167,7 @@ openModal(){
               autoCorrect={true}
               keyboardType="default"
               value={this.state.value}
+              onSubmitEditing={this.searchSubmit.bind(this)}
               onKeyPress={this.onKeyPress}/>
 
               <TextInput
@@ -167,6 +176,7 @@ openModal(){
               autoCorrect={false}
               spellCheck={false}
               value={this.state.value}
+              onSubmitEditing={this.searchSubmit.bind(this)}
               onKeyPress={this.onKeyPress}/>
             </View>
 
@@ -308,7 +318,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    width:"30%",
+    width:"50%",
   },
   mouse: {
     height: 250,
