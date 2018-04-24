@@ -224,6 +224,7 @@ shortcutOnClick(button){
               onPressOut={this.handlePressOut.bind(this,"tab")}
               style={styles.ControlButtons}>
               <Image
+                  key="tab"
                   style={styles.arrowLeft}
                   source={require('../images/tab.png')}
                 />
@@ -254,6 +255,7 @@ shortcutOnClick(button){
                 onPressOut={this.handlePressOut.bind(this,"arrowTop")}
                 style={styles.ControlButtons}>
                 <Image
+                    key="arrowTop"
                     style={styles.arrowTop}
                     source={require('../images/right.png')}
                   />
@@ -266,6 +268,7 @@ shortcutOnClick(button){
               onPressOut={this.handlePressOut.bind(this,"arrowLeft")}
               style={styles.ControlButtons}>
               <Image
+                  key="arrowLeft"
                   style={styles.arrowLeft}
                   source={require('../images/right.png')}
                 />
@@ -276,6 +279,7 @@ shortcutOnClick(button){
               onPressOut={this.handlePressOut.bind(this,"arrowBottom")}
               style={styles.ControlButtons}>
               <Image
+                  key="arrowBottom"
                   style={styles.arrowBottom}
                   source={require('../images/right.png')}
                 />
@@ -286,6 +290,7 @@ shortcutOnClick(button){
               onPressOut={this.handlePressOut.bind(this,"arrowRight")}
               style={styles.ControlButtons}>
               <Image
+                  key="arrowRight"
                   style={styles.arrowRight}
                   source={require('../images/right.png')}
                 />

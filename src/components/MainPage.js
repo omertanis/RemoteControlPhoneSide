@@ -84,7 +84,6 @@ handleOnPress(value){
     if ((net.isIP(e.data) == 4) && (choose=="Wi-Fi"))  {
 
     client = net.createConnection(8090, ip, () => {
-        client.write('Hello, server! Love, Client.');
         this.props.navigation.navigate('MousePage', {"ip":ip});
   });
 
@@ -148,6 +147,7 @@ else{
 
       <View style={styles.container}>
       <Image
+          key="logo"
           style={styles.logo}
           source={require('../images/logo.png')}
         />
